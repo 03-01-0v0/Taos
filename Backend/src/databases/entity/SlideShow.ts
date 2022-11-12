@@ -1,19 +1,16 @@
 import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 
 @Entity()
-export class User {
+export class SlideShow {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    name: string;
+    accountId: number;
 
     @Column()
-    email: string;
+    slideTitle: string;
 
     @Column()
-    address: string;
-
-    @Column()
-    phoneNumber: string;
+    slideImg: string;
 }

@@ -1,19 +1,21 @@
 import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 
 @Entity()
-export class User {
+export class DetailOrderBill {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    name: string;
+    orderId: number;
 
     @Column()
-    email: string;
+    productId: number;
+
+    @Column({
+        type: 'float'
+    })
+    price: number
 
     @Column()
-    address: string;
-
-    @Column()
-    phoneNumber: string;
+    quantity: number;
 }
