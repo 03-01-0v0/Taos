@@ -6,7 +6,10 @@ export class WareHouseReceipt {
     id: number;
 
     @Column()
-    accountId: number;
+    creatorId: number;
+
+    @Column()
+    receiverId: number;
 
     @Column()
     createdDate: Date;
