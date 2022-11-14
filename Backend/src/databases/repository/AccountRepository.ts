@@ -1,12 +1,18 @@
 import {Repository} from 'typeorm';
 import {Account} from '../entity/Account';
+import {Authorization} from '../entity/Authorization';
+import {User} from '../entity/User';
 import {appDataSource} from '../data-source';
 
 class AccountRepository {
     private _accountRepository: Repository<Account>;
+    private _authRepository: Repository<Authorization>;
+    private _userRepository: Repository<User>;
 
     constructor() {
         this._accountRepository = appDataSource.getRepository(Account);
+        this._authRepository = appDataSource.getRepository(Authorization);
+        this._userRepository = appDataSource.getRepository(User);
     }
 
     public setAccount(
@@ -37,6 +43,14 @@ class AccountRepository {
         name: string,
         password: string
     ): Promise<Account> {
+        const auth: Authorization = await this._authRepository.findOneBy({id: authorizationId});
+        if (!auth) {
+            throw new Error(`Cant find authorization with id: ${authorizationId}`);
+        }
+        const user: User = await this._userRepository.findOneBy({id: userId});
+        if (!user) {
+            throw new Error(`Cant find user with id: ${userId}`);
+        }
         const account = new Account();
         this.setAccount(authorizationId, userId, name, password, account);
         return this._accountRepository.save(account);
@@ -52,6 +66,10 @@ class AccountRepository {
         const account = await this._accountRepository.findOneBy({id});
         if (!account) {
             throw new Error(`Cant find account with id: ${id}`);
+        }
+        const user: User = await this._userRepository.findOneBy({id: userId});
+        if (!user) {
+            throw new Error(`Cant find user with id: ${userId}`);
         }
         this.setAccount(authorizationId, userId, name, password, account);
         return this.saveAccount(account);

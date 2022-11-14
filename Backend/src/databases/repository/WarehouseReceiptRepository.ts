@@ -1,12 +1,18 @@
 import {Repository} from 'typeorm';
 import {WareHouseReceipt} from '../entity/WarehouseReceipt';
+import {Account} from '../entity/Account';
+import {User} from '../entity/User';
 import {appDataSource} from '../data-source';
 
 class WarehouseReceiptRepository {
     private _warehouseReceiptRepository: Repository<WareHouseReceipt>;
+    private _accountRepository: Repository<Account>;
+    private _userRepository: Repository<User>;
 
     constructor() {
         this._warehouseReceiptRepository = appDataSource.getRepository(WareHouseReceipt);
+        this._accountRepository = appDataSource.getRepository(Account);
+        this._userRepository = appDataSource.getRepository(User);
     }
 
     public async getAllWarehouseReceipt(): Promise<WareHouseReceipt[]> {
@@ -37,6 +43,14 @@ class WarehouseReceiptRepository {
         createdDate: Date,
         note: string
     ): Promise<WareHouseReceipt> {
+        const creator: Account = await this._accountRepository.findOneBy({id: creatorId});
+        if (!creator) {
+            throw new Error(`Cant find account with id: ${creatorId}`);
+        }
+        const receiver: User = await this._userRepository.findOneBy({id: receiverId});
+        if (!receiver) {
+            throw new Error(`Cant find user with id: ${receiverId}`);
+        }
         const warehouseReceipt = new WareHouseReceipt();
         this.setWarehouseReceipt(creatorId, receiverId, createdDate, note, warehouseReceipt);
         return this.saveWarehouseReceipt(warehouseReceipt);
@@ -49,6 +63,14 @@ class WarehouseReceiptRepository {
         createdDate: Date,
         note: string
     ): Promise<WareHouseReceipt> {
+        const creator: Account = await this._accountRepository.findOneBy({id: creatorId});
+        if (!creator) {
+            throw new Error(`Cant find account with id: ${creatorId}`);
+        }
+        const receiver: User = await this._userRepository.findOneBy({id: receiverId});
+        if (!receiver) {
+            throw new Error(`Cant find user with id: ${receiverId}`);
+        }
         const warehouseReceipt = await this._warehouseReceiptRepository.findOneBy({id});
         if (!warehouseReceipt) {
             throw new Error(`Cant find warehouseReceipt with id: ${id}`);

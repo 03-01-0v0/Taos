@@ -1,12 +1,18 @@
 import {Repository} from 'typeorm';
 import {Product} from '../entity/Product';
+import {ProductType} from '../entity/ProductType';
+import {Unit} from '../entity/Unit';
 import {appDataSource} from '../data-source';
 
 class ProductRepository {
     private _productRepository: Repository<Product>;
+    private _productTypeRepository: Repository<ProductType>;
+    private _unitRepository: Repository<Unit>;
 
     constructor() {
         this._productRepository = appDataSource.getRepository(Product);
+        this._productTypeRepository = appDataSource.getRepository(ProductType);
+        this._unitRepository = appDataSource.getRepository(Unit);
     }
 
     public setProduct(
@@ -58,6 +64,16 @@ class ProductRepository {
         description: string,
         isSell: boolean
     ): Promise<Product> {
+        const productType: ProductType = await this._productTypeRepository.findOneBy({
+            id: productTypeId,
+        });
+        if (!productType) {
+            throw new Error(`Cant find productType with id: ${productTypeId}`);
+        }
+        const unit: Unit = await this._unitRepository.findOneBy({id: unitId});
+        if (!unit) {
+            throw new Error(`Cant find unit with id: ${unit}`);
+        }
         const product = new Product();
         this.setProduct(
             productTypeId,
@@ -90,6 +106,16 @@ class ProductRepository {
         description: string,
         isSell: boolean
     ): Promise<Product> {
+        const productType: ProductType = await this._productTypeRepository.findOneBy({
+            id: productTypeId,
+        });
+        if (!productType) {
+            throw new Error(`Cant find productType with id: ${productTypeId}`);
+        }
+        const unit: Unit = await this._unitRepository.findOneBy({id: unitId});
+        if (!unit) {
+            throw new Error(`Cant find unit with id: ${unit}`);
+        }
         const product = await this._productRepository.findOneBy({id});
         if (!product) {
             throw new Error(`Cant find product with id: ${id}`);

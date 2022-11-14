@@ -1,12 +1,15 @@
 import {Repository} from 'typeorm';
 import {ProductType} from '../entity/ProductType';
+import {Account} from '../entity/Account';
 import {appDataSource} from '../data-source';
 
 export class ProductTypeRepository {
     private _productTypeRepository: Repository<ProductType>;
+    private _accountRepository: Repository<Account>;
 
     constructor() {
         this._productTypeRepository = appDataSource.getRepository(ProductType);
+        this._accountRepository = appDataSource.getRepository(Account);
     }
 
     public async getAllProductType(): Promise<ProductType[]> {
@@ -22,6 +25,10 @@ export class ProductTypeRepository {
         description: string,
         isSell: boolean
     ): Promise<ProductType> {
+        const account: Account = await this._accountRepository.findOneBy({id: accountId});
+        if (!account) {
+            throw new Error(`Cant find account with id: ${accountId}`);
+        }
         const productType = new ProductType();
         productType.accountId = accountId;
         productType.description = description;
@@ -35,6 +42,10 @@ export class ProductTypeRepository {
         description: string,
         isSell: boolean
     ): Promise<ProductType> {
+        const account: Account = await this._accountRepository.findOneBy({id: accountId});
+        if (!account) {
+            throw new Error(`Cant find account with id: ${accountId}`);
+        }
         const productType = await this._productTypeRepository.findOneBy({id});
         if (!productType) {
             throw new Error(`Cant find product type with id: ${id}`);
