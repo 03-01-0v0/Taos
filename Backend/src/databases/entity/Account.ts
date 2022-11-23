@@ -5,7 +5,9 @@ export class Account {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        default: 0,
+    })
     authorizationId: number;
 
     @Column()
@@ -16,4 +18,9 @@ export class Account {
 
     @Column()
     password: string;
+
+    @Column({
+        default: ''
+    })
+    token: string;
 }

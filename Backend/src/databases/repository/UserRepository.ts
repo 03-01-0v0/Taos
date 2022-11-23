@@ -27,7 +27,7 @@ class UserRepository {
         user.name = name;
         user.email = email;
         user.address = address;
-        user.phoneNumber = phoneNumber;
+        user.phoneNumber = phoneNumber;                
         return this._userRepository.save(user);
     }
 
@@ -66,6 +66,10 @@ class UserRepository {
             return this._userRepository.save(user);
         }
         return null;
+    }
+
+    public async findUserByEmail(email: string): Promise<User> {
+        return this._userRepository.findOneBy({email});
     }
 }
 

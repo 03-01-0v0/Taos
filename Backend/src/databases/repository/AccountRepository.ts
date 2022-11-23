@@ -37,6 +37,10 @@ class AccountRepository {
         return this._accountRepository.findOneBy({id});
     }
 
+    public async getAccountByName(name: string): Promise<Account> {
+        return this._accountRepository.findOneBy({name});
+    }
+
     public async addAccount(
         authorizationId: number,
         userId: number,
@@ -53,6 +57,7 @@ class AccountRepository {
         }
         const account = new Account();
         this.setAccount(authorizationId, userId, name, password, account);
+
         return this._accountRepository.save(account);
     }
 
