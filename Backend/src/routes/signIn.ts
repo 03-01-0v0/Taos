@@ -4,4 +4,4 @@ const SignInController = require('../controllers/SignInController');
 
 router.use('/', SignInController.signIn);
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const signUpRouter = require('../routes/signUp');
-const signInRouter = require('../routes/signIn');
-const signOutRouter = require('../routes/signOut');
+import signUpRouter from './signUp';
+import signInRouter from './signIn';
+import signOutRouter from './signOut';
 import productRouter from './product';
 import userRouter from './user';
 

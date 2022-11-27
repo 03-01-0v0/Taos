@@ -5,4 +5,4 @@ const SignOutController = require('../controllers/SignOutController');
 
 router.use('/',verifyToken, SignOutController.signOut);
 
-module.exports = router;
+export default router;
