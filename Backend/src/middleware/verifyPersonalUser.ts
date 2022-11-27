@@ -14,14 +14,16 @@ interface payload {
     exp: any;
 }
 
-const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
+const verifyPersonalUser = (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
+        const body = req.body;
+        const {id} = body.params;
         if (!token) {
             res.status(403).send('Access Denied');
         } else {
             const decoded = jwt.verify(token, key) as payload;
-            if (decoded.authorization != 2) {
+            if (decoded.userId != id) {
                 return next(createError(401, 'Permission denied'));
             }
             req.app.set('decoded', decoded);
@@ -32,4 +34,4 @@ const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default verifyAdmin;
+export default verifyPersonalUser;

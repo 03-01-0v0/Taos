@@ -1,7 +1,10 @@
 import {Response, Request, NextFunction} from 'express';
+import {accountRepositoryController} from '../databases/repository/AccountRepository';
 import {userRepositoryController} from '../databases/repository/UserRepository';
-import { createError } from '../utils/createError';
+import * as bcrypt from 'bcrypt';
+import {createError} from '../utils/createError';
 
+const SALT = 10;
 class UserController {
     public async getAll(req: Request, res: Response, next: NextFunction) {
         try {
@@ -18,24 +21,54 @@ class UserController {
             next(err);
         }
     }
+
+    public async getMe(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body = req.body;
+            const {id} = body;
+            const user = await userRepositoryController.getUserById(id);
+            res.status(200).json({
+                success: true,
+                data: user,
+                id: 1,
+            });
+        } catch(err) {
+            next(err)
+        }
+    }
+
     public async createUser(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const {
-                UserTypeId,
-                unitId,
-                code,
+            const {name, password, email, address, phoneNumber} = body.params;
+            const user = await userRepositoryController.findUserByEmail(email);
+            if (user) {
+                return next(createError(419, 'Email exits'));
+            }
+            const newUser = await userRepositoryController.addUser(
                 name,
-                img,
-                quantity,
-                purchasePrice,
-                price,
-                shortDescription,
-                description,
-                isSell,
-            } = body.params;
-            console.log(name);
-            res.status(200).end('success');
+                email,
+                address,
+                phoneNumber
+            );
+            if (!newUser) {
+                return next(createError(500, 'Cant create user'));
+            }
+            const hashPassword = bcrypt.hashSync(password, SALT);
+            const newAccount = await accountRepositoryController.addAccount(
+                1,
+                newUser.id,
+                email,
+                hashPassword
+            );
+            if (!newAccount) {
+                return next(createError(500, 'Cant create account'));
+            }
+            res.status(201).json({
+                success: true,
+                message: 'CREATED',
+                data: newAccount,
+            });
         } catch (err) {
             next(err);
         }
@@ -43,6 +76,20 @@ class UserController {
 
     public async updateUser(req, Request, res: Response, next: NextFunction) {
         try {
+            const body = req.body;
+            const {id, name, email, address, phoneNumber} = body;
+            const user = await userRepositoryController.updateUserById(
+                id,
+                name,
+                email,
+                address,
+                phoneNumber
+            );
+            res.status(200).json({
+                success: true,
+                message: 'UPDATED',
+                data: user,
+            });
         } catch (err) {
             next(err);
         }
@@ -50,6 +97,14 @@ class UserController {
 
     public async deleteUser(req: Request, res: Response, next: NextFunction) {
         try {
+            const body = req.body;
+            const {id} = body;
+            const user = await userRepositoryController.removeUser(id);
+            res.status(200).json({
+                success: true,
+                message: 'DELETED',
+                data: user,
+            });
         } catch (err) {
             next(err);
         }

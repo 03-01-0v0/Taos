@@ -12,7 +12,6 @@ import * as multer from 'multer';
 
 /* CONFIGURATIONS */
 dotenv.config();
-const __dirname = path.dirname(__filename);
 const app: Express = express();
 app.use(express.json());
 app.use(helmet());
@@ -21,7 +20,7 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
-app.use('/assets', express.static(path.join(__dirname, '.public/assets')));
+app.use(express.static(path.join(__dirname, './public/assets')));
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
@@ -33,24 +32,24 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({storage});
+export const upload = multer({storage});
 
 const route = require('./routes');
 const port = process.env.PORT;
 
 appDataSource
-    .initialize()
-    .then(async () => {
-        console.log('Init DB successfully');
-        //Route init
-        route(app);
-        // Handle Error request
-        app.use(handleError);
-        // store img
-        //
-        app.listen(port, () => {
-            console.log(`⚡️[server]: Server is running at http://127.0.0.1/:${port}`);
-        });
-        // });
-    })
-    .catch((error) => console.log(error));
+.initialize()
+.then(async () => {
+    console.log('Init DB successfully');
+    //Route init
+    route(app);
+    // Handle Error request
+    app.use(handleError);
+    // store img
+    //
+    app.listen(port, () => {
+        console.log(`⚡️[server]: Server is running at http://127.0.0.1/:${port}`);
+    });
+    // });
+})
+.catch((error) => console.log(error));

@@ -20,6 +20,7 @@ class SignInController {
             if (verifyPassword) {
                 const payload = {
                     name: name,
+                    userId: account.userId, 
                     authorization: account.authorizationId,
                     password: password,
                     type: 'access',
