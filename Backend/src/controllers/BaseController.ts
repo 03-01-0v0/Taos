@@ -17,8 +17,6 @@ export class BaseController {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     protected errorToResponse(e: any, res: Response): void {
-        console.log('errorToResponse');
-
         if (e && e.message) {
             let url = e?.config?.url;
             if (url !== undefined) {

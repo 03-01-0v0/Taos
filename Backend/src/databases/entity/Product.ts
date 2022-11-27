@@ -17,10 +17,14 @@ export class Product {
     @Column()
     name: string;
 
-    @Column()
+    @Column({
+        array: true
+    })
     img: string;
 
-    @Column()
+    @Column({
+        default: 1
+    })
     quantity: number;
 
     @Column()
@@ -35,6 +39,8 @@ export class Product {
     @Column()
     description: string;
 
-    @Column()
+    @Column({
+        default: false
+    })
     isSell: boolean;
 }

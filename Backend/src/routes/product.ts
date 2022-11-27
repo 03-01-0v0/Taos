@@ -1,7 +1,11 @@
 import * as express from 'express';
+import verifyAdmin from '../middleware/verifyAdmin';
 const router = express.Router();
-const productController = require('../controllers/ProductController');
+import productController from '../controllers/ProductController';
 
-router.use('/', productController.getAll);
+router.get('/', productController.getAll);
+router.post('/', verifyAdmin, productController.createProduct);
+router.put('/', verifyAdmin, productController.updateProduct);
+router.delete('/', verifyAdmin, productController.deleteProduct)
 
-module.exports = router;
+export default router;
