@@ -30,7 +30,14 @@ class AccountRepository {
     }
 
     public async getAllAccount(): Promise<Account[]> {
-        return this._accountRepository.find();
+        return this._accountRepository
+            .createQueryBuilder('account')
+            .leftJoinAndSelect(
+                Authorization,
+                'authorization',
+                'account.authorizationId = authorization.id'
+            )
+            .getMany();
     }
 
     public async getAccountById(id: number): Promise<Account> {

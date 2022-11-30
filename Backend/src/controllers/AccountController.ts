@@ -1,20 +1,21 @@
 import {Response, Request, NextFunction} from 'express';
 import {accountRepositoryController} from '../databases/repository/AccountRepository';
 import {userRepositoryController} from '../databases/repository/UserRepository';
+import {authRepositoryController} from '../databases/repository/AuthorizationRepository';
 import * as bcrypt from 'bcrypt';
 import {createError} from '../utils/createError';
 
 const SALT = 10;
-class UserController {
+class AccountController {
     public async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const listUser = await userRepositoryController.getAllUser();
-            if (!listUser) {
+            const listAccount = await accountRepositoryController.getAllAccount();
+            if (!listAccount) {
                 return next(createError(500, 'Internal Server Error'));
             }
             res.status(200).json({
                 success: true,
-                data: listUser,
+                data: listAccount,
                 id: 1,
             });
         } catch (err) {
@@ -22,42 +23,22 @@ class UserController {
         }
     }
 
-    public async getMe(req: Request, res: Response, next: NextFunction) {
+    public async createAccount(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const {id} = body;
-            const user = await userRepositoryController.getUserById(id);
-            res.status(200).json({
-                success: true,
-                message: 'OK',
-                data: user,
-            });
-        } catch(err) {
-            next(err)
-        }
-    }
-
-    public async createUser(req: Request, res: Response, next: NextFunction) {
-        try {
-            const body = req.body;
-            const {name, password, email, address, phoneNumber} = body.params;
+            const {authorizationId, userId, email, password} = body.params;
             const user = await userRepositoryController.findUserByEmail(email);
             if (user) {
                 return next(createError(419, 'Email exits'));
             }
-            const newUser = await userRepositoryController.addUser(
-                name,
-                email,
-                address,
-                phoneNumber
-            );
-            if (!newUser) {
-                return next(createError(500, 'Cant create user'));
+            const authorization = authRepositoryController.getAuthorizationById(authorizationId);
+            if (authorization) {
+                return next(createError(419, 'Authorization exits'));
             }
             const hashPassword = bcrypt.hashSync(password, SALT);
             const newAccount = await accountRepositoryController.addAccount(
-                1,
-                newUser.id,
+                authorizationId,
+                userId,
                 email,
                 hashPassword
             );
@@ -74,36 +55,45 @@ class UserController {
         }
     }
 
-    public async updateUser(req, Request, res: Response, next: NextFunction) {
+    public async updateAccount(req, Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const {id, name, email, address, phoneNumber} = body;
-            const user = await userRepositoryController.updateUserById(
+            const {id, authorizationId, userId, email, password} = body;
+            const user = await userRepositoryController.findUserByEmail(email);
+            if (user) {
+                return next(createError(419, 'Email exits'));
+            }
+            const authorization = authRepositoryController.getAuthorizationById(authorizationId);
+            if (authorization) {
+                return next(createError(419, 'Authorization exits'));
+            }
+            const hashPassword = bcrypt.hashSync(password, SALT);
+            const account = await accountRepositoryController.updateAccount(
                 id,
-                name,
+                authorizationId,
+                userId,
                 email,
-                address,
-                phoneNumber
+                hashPassword
             );
             res.status(200).json({
                 success: true,
                 message: 'UPDATED',
-                data: user,
+                data: account,
             });
         } catch (err) {
             next(err);
         }
     }
 
-    public async deleteUser(req: Request, res: Response, next: NextFunction) {
+    public async deleteAccount(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
             const {id} = body;
-            const user = await userRepositoryController.removeUser(id);
+            const account = await accountRepositoryController.removeAccount(id);
             res.status(200).json({
                 success: true,
                 message: 'DELETED',
-                data: user,
+                data: account,
             });
         } catch (err) {
             next(err);
@@ -111,4 +101,4 @@ class UserController {
     }
 }
 
-export default new UserController();
+export default new AccountController();

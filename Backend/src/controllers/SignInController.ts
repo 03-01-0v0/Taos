@@ -20,7 +20,7 @@ class SignInController {
             if (verifyPassword) {
                 const payload = {
                     name: name,
-                    userId: account.userId, 
+                    userId: account.userId,
                     authorization: account.authorizationId,
                     password: password,
                     type: 'access',
@@ -35,6 +35,11 @@ class SignInController {
                     success: true,
                     message: 'Authorization success',
                     token: token,
+                    isAdmin: account.authorizationId === 2,
+                    details: {
+                        username: name,
+                        password: password
+                    }
                 });
             } else {
                 return next(createError(401, 'Authorization false'));

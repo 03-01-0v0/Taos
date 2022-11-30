@@ -17,15 +17,26 @@ export class Product {
     @Column()
     name: string;
 
-    @Column({
-        array: true
+    @Column('character varying',{
+        array: true,
+        default: []
     })
-    img: string;
+    img: string[];
 
     @Column({
         default: 1
     })
     quantity: number;
+
+    @Column({
+        default: ''
+    })
+    color: string;
+
+    @Column({
+        default: '64GB'
+    })
+    capacity: string;
 
     @Column()
     purchasePrice: number;
@@ -43,4 +54,14 @@ export class Product {
         default: false
     })
     isSell: boolean;
+
+    @Column({
+        default: new Date()
+    })
+    createdDate: Date;
+
+    @Column({
+        default: new Date()
+    })
+    updatedDate: Date;
 }
