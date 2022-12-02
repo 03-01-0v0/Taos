@@ -13,7 +13,9 @@ export class Account {
     @Column()
     userId: number;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     name: string;
 
     @Column()

@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -55,13 +55,9 @@ export class Product {
     })
     isSell: boolean;
 
-    @Column({
-        default: new Date()
-    })
+    @CreateDateColumn()
     createdDate: Date;
 
-    @Column({
-        default: new Date()
-    })
+    @UpdateDateColumn()
     updatedDate: Date;
 }

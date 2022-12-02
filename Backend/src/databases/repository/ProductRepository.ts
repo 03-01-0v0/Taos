@@ -155,6 +155,15 @@ class ProductRepository {
     public async addListProduct() {
         return this._productRepository.insert(products);
     }
+
+    public async getProductByQuantity(quantity: number): Promise<Product[]> {
+        return this._productRepository.find({
+            order: {
+                id: 'DESC',
+            },
+            take: quantity,
+        });
+    }
 }
 
 const products = [
@@ -172,7 +181,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-blue1', 'iphone-13-pro-blue2', 'iphone-13-pro-blue3'],
         color: 'blue',
-        capacity: '512GB'
+        capacity: '512GB',
     },
     {
         productTypeId: 7,
@@ -188,7 +197,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-graphite1', 'iphone-13-pro-graphite2', 'iphone-13-pro-graphite3'],
         color: 'graphite',
-        capacity: '512GB'
+        capacity: '512GB',
     },
     {
         productTypeId: 7,
@@ -204,7 +213,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-green1', 'iphone-13-pro-green2', 'iphone-13-pro-green3'],
         color: 'green',
-        capacity: '512GB'
+        capacity: '512GB',
     },
     {
         productTypeId: 7,
@@ -220,7 +229,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-blue1', 'iphone-13-pro-blue2', 'iphone-13-pro-blue3'],
         color: 'blue',
-        capacity: '128GB'
+        capacity: '128GB',
     },
     {
         productTypeId: 7,
@@ -236,7 +245,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-green1', 'iphone-13-pro-green2', 'iphone-13-pro-green3'],
         color: 'green',
-        capacity: '128GB'
+        capacity: '128GB',
     },
     {
         productTypeId: 7,
@@ -252,7 +261,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-graphite1', 'iphone-13-pro-graphite2', 'iphone-13-pro-graphite3'],
         color: 'graphite',
-        capacity: '128GB'
+        capacity: '128GB',
     },
     {
         productTypeId: 7,
@@ -268,7 +277,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-blue1', 'iphone-13-pro-blue2', 'iphone-13-pro-blue3'],
         color: 'blue',
-        capacity: '256GB'
+        capacity: '256GB',
     },
     {
         productTypeId: 7,
@@ -284,7 +293,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-green1', 'iphone-13-pro-green2', 'iphone-13-pro-green3'],
         color: 'green',
-        capacity: '256GB'
+        capacity: '256GB',
     },
     {
         productTypeId: 7,
@@ -300,7 +309,7 @@ const products = [
         isSell: true,
         img: ['iphone-13-pro-graphite1', 'iphone-13-pro-graphite2', 'iphone-13-pro-graphite3'],
         color: 'graphite',
-        capacity: '256GB'
+        capacity: '256GB',
     },
 ];
 

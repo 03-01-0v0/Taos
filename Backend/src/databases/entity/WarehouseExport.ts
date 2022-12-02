@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 export class WarehouseExport {
@@ -6,14 +6,17 @@ export class WarehouseExport {
     id: number;
 
     @Column()
-    accountId: number;
+    creatorId: number;
 
     @Column()
-    userId: number;
-
-    @Column()
-    createdDate: Date;
+    receiptId: number;
 
     @Column()
     note: string;
+
+    @CreateDateColumn()
+    createdDate: Date;
+
+    @UpdateDateColumn()
+    updatedDate: Date;
 }

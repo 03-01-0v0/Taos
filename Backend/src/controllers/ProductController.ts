@@ -114,6 +114,28 @@ class ProductController {
             next(err);
         }
     }
+
+    public async getProductByQuantity(req: Request, res: Response, next: NextFunction) {
+        try {
+            const query = req.query;
+            const quantity = query.count as string?? "";
+            console.log('quantity', quantity);
+            let count = 5;
+            try {
+                count = parseInt(quantity ?? "5");
+            } catch(err) {
+                next(err);
+            }
+            const lstProduct = await productRepositoryController.getProductByQuantity(count);
+            res.status(200).json({
+                success: true,
+                message: 'OK',
+                data: lstProduct,
+            });
+        } catch(err) {
+            next(err);
+        }
+    }
 }
 
 export default new ProductController();

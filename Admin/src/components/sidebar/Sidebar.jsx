@@ -11,17 +11,32 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
+import { AuthContext } from '../../context/AuthContext';
+import axiosClient from '../api/axiosClient';
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+
+  const {loading, error, dispatcher} = useContext(AuthContext);
+  
+  const navigate = useNavigate();
+
+  const handleClickLogout = async (e) => {
+    const res = await axiosClient.post('/sign-out');
+    dispatch({type: 'LOGOUT', payload: res.data.details});
+    await localStorage.removeItem('token');
+    await localStorage.removeItem('user');
+    navigate('/login');
+  }
+
   return (
     <div className="sidebar">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">lamadmin</span>
+          <span className="logo">Taos admin</span>
         </Link>
       </div>
       <hr />
@@ -39,10 +54,16 @@ const Sidebar = () => {
               <span>Users</span>
             </li>
           </Link>
-          <Link to="/hotels" style={{ textDecoration: "none" }}>
+          <Link to="/account" style={{ textDecoration: "none" }}>
+            <li>
+              <PersonOutlineIcon className="icon" />
+              <span>Accounts</span>
+            </li>
+          </Link>
+          <Link to="/product" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Hotels</span>
+              <span>Products</span>
             </li>
           </Link>
           <Link to="/rooms" style={{ textDecoration: "none" }}>
@@ -83,8 +104,8 @@ const Sidebar = () => {
             <span>Profile</span>
           </li>
           <li>
-            <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <ExitToAppIcon className="icon" onClick={handleClickLogout} />
+            <span onClick={handleClickLogout}>Logout</span>
           </li>
         </ul>
       </div>

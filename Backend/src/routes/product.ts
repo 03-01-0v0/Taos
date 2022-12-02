@@ -7,5 +7,6 @@ router.get('/', productController.getAll);
 router.post('/', verifyAdmin, productController.createProduct);
 router.put('/', verifyAdmin, productController.updateProduct);
 router.delete('/', verifyAdmin, productController.deleteProduct)
+router.get('/last',verifyAdmin, productController.getProductByQuantity);
 
 export default router;

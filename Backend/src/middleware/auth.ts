@@ -11,6 +11,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
         } else {
             const decoded = jwt.verify(token, key);
             req.app.set('decoded', decoded);
+            req.app.set('token', token);
             next();
         }
     } catch (err) {

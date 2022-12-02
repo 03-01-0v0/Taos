@@ -13,6 +13,7 @@ const Datatable = ({columns}) => {
   const { data, loading, error } = useFetch(`/${path}`);
 
   useEffect(() => {
+    console.log(data);
     setList(data);
   }, [data]);
 
@@ -36,7 +37,7 @@ const Datatable = ({columns}) => {
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row._id)}
+              onClick={() => handleDelete(params.row.id)}
             >
               Delete
             </div>
@@ -60,7 +61,7 @@ const Datatable = ({columns}) => {
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
-        getRowId={(row) => row._id}
+        getRowId={(row) => row.id}
       />
     </div>
   );
