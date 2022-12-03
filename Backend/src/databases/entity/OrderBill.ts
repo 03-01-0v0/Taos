@@ -11,7 +11,9 @@ export class OrderBill {
     @Column()
     paymentId: number;
 
-    @Column()
+    @Column({
+        default: 1
+    })
     saleId: number;
 
     @Column()

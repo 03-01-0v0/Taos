@@ -19,6 +19,12 @@ export class DetailOrderBill {
     @Column()
     quantity: number;
 
+    @Column()
+    color: string;
+
+    @Column()
+    capacity: string;
+
     @CreateDateColumn()
     createdDate: Date;
 

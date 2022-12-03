@@ -14,6 +14,12 @@ export class DetailWarehouseExport {
     @Column()
     quantity: number;
 
+    @Column()
+    color: string;
+
+    @Column()
+    capacity: string;
+
     @CreateDateColumn()
     createdDate: Date;
 
