@@ -46,13 +46,29 @@ const Datatable = ({columns}) => {
       },
     },
   ];
+  if (loading)
+    return <div>Loading</div>
   return (
     <div className="datatable">
       <div className="datatableTitle">
         {path}
-        <Link to={`/${path}/new`} className="link">
-          Add New
-        </Link>
+        <div className="group-action">
+          {
+            path === 'warehouse-receipt' &&
+            <Link to={`/${path}/new`} className="link">
+              Export
+            </Link>
+          }
+                  {
+            path === 'order-bill' &&
+            <Link to={`/${path}/new`} className="link">
+              Export
+            </Link>
+          }
+          <Link to={`/${path}/new`} className="link">
+            Add New
+          </Link>
+        </div>
       </div>
       <DataGrid
         className="datagrid"

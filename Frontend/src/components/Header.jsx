@@ -9,13 +9,21 @@ const mainNav = [
         path: "/"
     },
     {
-        display: "Sản phẩm",
+        display: "Iphone",
         path: "/catalog"
     },
     {
-        display: "Phụ kiện",
-        path: "/accessories"
+        display: "Ipad",
+        path: "/catalog"
     },
+    {
+        display: "Apple Watch",
+        path: "/catalog"
+    },
+    // {
+    //     display: "Phụ kiện",
+    //     path: "/accessories"
+    // },
     {
         display: "Liên hệ",
         path: "/contact"

@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 export class OrderStatus {
@@ -14,6 +14,9 @@ export class OrderStatus {
     @Column()
     statusId: number;
 
-    @Column()
-    startedDate: Date;
+    @CreateDateColumn()
+    createdDate: Date;
+
+    @UpdateDateColumn()
+    updatedDate: Date;
 }

@@ -9,7 +9,7 @@ import './style/dark.scss';
 import {useContext} from 'react';
 import {DarkModeContext} from './context/darkModeContext';
 import {AuthContext} from './context/AuthContext';
-import {productColumns, roomColumns, userColumns, accountColumns} from './datatablesource';
+import {productColumns, orderBillColumns, warehouseReceiptColumns, userColumns, accountColumns} from './datatablesource';
 import NewHotel from './pages/newHotel/NewHotel';
 import NewRoom from './pages/newRoom/NewRoom';
 
@@ -123,12 +123,38 @@ function App() {
                                 index
                                 element={
                                     <ProtectedRoute>
-                                        <List columns={roomColumns} />
+                                        <List columns={orderBillColumns} />
                                     </ProtectedRoute>
                                 }
                             />
                             <Route
                                 path=':orderBillId'
+                                element={
+                                    <ProtectedRoute>
+                                        <Single />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path='new'
+                                element={
+                                    <ProtectedRoute>
+                                        <NewRoom />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Route>
+                        <Route path='warehouse-receipt'>
+                            <Route
+                                index
+                                element={
+                                    <ProtectedRoute>
+                                        <List columns={warehouseReceiptColumns} />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path=':warehouseReceiptId'
                                 element={
                                     <ProtectedRoute>
                                         <Single />

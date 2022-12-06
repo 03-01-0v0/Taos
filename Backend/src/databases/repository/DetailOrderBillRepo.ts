@@ -17,8 +17,8 @@ class DetailOrderBillRepo {
 
     public async getAllDetailOrderBill(): Promise<DetailOrderBill[]> {
         return this._detailOrderBillRepo
-            .query(`SELECT detail_order_bill.id, product.name, "orderId", "productId", detail_order_bill.price, detail_order_bill.quantity, detail_order_bill.color, detail_order_bill.capacity
-        FROM public.detail_order_bill left join product on "productId" = product.id;`);
+            .query(`SELECT detail_order_bill.id, product.name, order_status."statusId", detail_order_bill."orderId", "productId", detail_order_bill.price, detail_order_bill.quantity, detail_order_bill.color, detail_order_bill.capacity
+        FROM public.detail_order_bill left join order_status on detail_order_bill."orderId" = order_status."orderId" left join product on "productId" = product.id;`);
     }
 
     public async getDetailOrderBillById(id: number): Promise<DetailOrderBill> {

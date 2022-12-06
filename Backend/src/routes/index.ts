@@ -5,6 +5,10 @@ import productRouter from './product';
 import userRouter from './user';
 import accountRouter from './account';
 import orderBillRouter from './orderBill';
+import warehouseReceiptRouter from './warehouseReceipt';
+import warehouseExportRouter from './warehouseExport';
+
+
 
 const route = (app: any) => {
     app.use('/sign-up', signUpRouter);
@@ -14,6 +18,8 @@ const route = (app: any) => {
     app.use('/users', userRouter);
     app.use('/account', accountRouter);
     app.use('/order-bill', orderBillRouter);
+    app.use('/warehouse-receipt', warehouseReceiptRouter);
+    app.use('/warehouse-export', warehouseExportRouter);
 };
 
 module.exports = route;

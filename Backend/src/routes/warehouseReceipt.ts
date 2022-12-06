@@ -1,8 +1,8 @@
 import * as express from 'express';
 import verifyAdmin from '../middleware/verifyAdmin';
+import WarehouseController from '../controllers/WarehouseReceiptController';
 const router = express.Router();
-import orderBillController from '../controllers/OrderBillController';
 
-router.get('/',  orderBillController.getAll);
+router.get('/', WarehouseController.getAll);
 
 export default router;

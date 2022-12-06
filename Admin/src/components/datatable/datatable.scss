@@ -12,6 +12,7 @@
     justify-content: space-between;
 
     .link{
+      margin-right: 5px;
       text-decoration: none;
       color: green;
       font-size: 16px;
@@ -52,6 +53,12 @@
       background-color: rgba(255, 0, 0, 0.05);
       color: crimson;
     }
+  }
+
+  .cellWithColor {
+    padding: 15px;
+    border-radius: 50%;
+    opacity: 0.5;
   }
 
   .cellAction {

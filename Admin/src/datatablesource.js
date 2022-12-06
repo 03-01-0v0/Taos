@@ -191,3 +191,111 @@ export const productColumns = [
         width: 230,
     },
 ];
+
+export const orderBillColumns = [
+    {field: 'id', headerName: 'ID', width: 70},
+    {
+        field: 'name',
+        headerName: 'Product',
+        width: 330,
+    },
+    {
+        field: 'orderId',
+        headerName: 'Order ID',
+        width: 200,
+    },
+    {
+        field: 'price',
+        headerName: 'Price',
+        width: 200,
+    },
+    {
+        field: 'quantity',
+        headerName: 'Quantity',
+        width: 100,
+    },
+    {
+        field: 'color',
+        headerName: 'Color',
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <div style={{backgroundColor:params.row.color, color: params.row.color}} className='cellWithColor'>
+                </div>
+            );
+        },
+    },
+    {
+        field: 'capacity',
+        headerName: 'Capacity',
+        width: 150,
+    },
+    {
+        field: 'statusId',
+        headerName: 'Status',
+        width: 200,
+        renderCell: (params) => {
+            return (
+                <div className='cellWithStatus'>
+                    <div className={`cellWithStatus ${params.row.statusId === 1 ? 'active' : 'pending'}`}>
+                        {params.row.statusId ? 'Đã xác nhận' : 'Chưa xác nhận'}
+                    </div>
+                </div>
+            );
+        },
+    },
+];
+
+export const warehouseReceiptColumns = [
+    {field: 'id', headerName: 'ID', width: 70},
+    {
+        field: 'name',
+        headerName: 'Product',
+        width: 330,
+    },
+    {
+        field: 'creatorId',
+        headerName: 'Creator ID',
+        width: 200,
+    },
+    {
+        field: 'productId',
+        headerName: 'Product ID',
+        width: 200,
+    },
+    {
+        field: 'quantity',
+        headerName: 'Quantity',
+        width: 100,
+    },
+    {
+        field: 'color',
+        headerName: 'Color',
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <div style={{backgroundColor:params.row.color, color: params.row.color}} className='cellWithColor'>
+                </div>
+            );
+        },
+    },
+    {
+        field: 'capacity',
+        headerName: 'Capacity',
+        width: 150,
+    },
+    {
+        field: 'statusId',
+        headerName: 'Status',
+        width: 200,
+        renderCell: (params) => {
+            return (
+                <div className='cellWithStatus'>
+                    <div className={`cellWithStatus ${params.row.statusId === 1 ? 'active' : 'pending'}`}>
+                        {params.row.statusId ? 'Đã xác nhận' : 'Chưa xác nhận'}
+                    </div>
+                </div>
+            );
+        },
+    },
+];
