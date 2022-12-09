@@ -5,11 +5,11 @@ const key = process.env.API_KEY;
 
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
+        const token = req.header('Authorization').replace('Bearer ', '');        
         if (!token) {
             res.status(403).send('Access Denied');
         } else {
-            const decoded = jwt.verify(token, key);
+            const decoded = jwt.verify(token, key);       
             req.app.set('decoded', decoded);
             req.app.set('token', token);
             next();

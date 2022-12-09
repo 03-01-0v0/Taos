@@ -9,9 +9,15 @@ import './style/dark.scss';
 import {useContext} from 'react';
 import {DarkModeContext} from './context/darkModeContext';
 import {AuthContext} from './context/AuthContext';
-import {productColumns, orderBillColumns, warehouseReceiptColumns, userColumns, accountColumns} from './datatablesource';
-import NewHotel from './pages/newHotel/NewHotel';
+import {productColumns, orderBillColumns, warehouseReceiptColumns, warehouseExportColumns, userColumns, accountColumns} from './datatablesource';
 import NewRoom from './pages/newRoom/NewRoom';
+import Statistic from './pages/statistics/Statistics';
+import NewUser from './pages/newUser/NewUser';
+import NewAccount from './pages/newAccount/NewAccount';
+import NewProduct from './pages/newProduct/NewProduct';
+import NewWarehouseExport from './pages/newWarehouseExport/NewWarehouseExport';
+import NewWarehouseReceipt from './pages/newWarehouseReceipt/NewWareHouseReceipt';
+import NewOrderBill from './pages/newOrderBill/NewOrderBill';
 
 function App() {
     const {darkMode} = useContext(DarkModeContext);
@@ -61,7 +67,7 @@ function App() {
                                 path='new'
                                 element={
                                     <ProtectedRoute>
-                                        <New inputs={userInputs} title='Add New User' />
+                                        <NewUser />
                                     </ProtectedRoute>
                                 }
                             />
@@ -87,7 +93,7 @@ function App() {
                                 path='new'
                                 element={
                                     <ProtectedRoute>
-                                        <New inputs={userInputs} title='Add New User' />
+                                        <NewAccount />
                                     </ProtectedRoute>
                                 }
                             />
@@ -113,7 +119,7 @@ function App() {
                                 path='new'
                                 element={
                                     <ProtectedRoute>
-                                        <NewHotel />
+                                        <NewProduct />
                                     </ProtectedRoute>
                                 }
                             />
@@ -139,7 +145,7 @@ function App() {
                                 path='new'
                                 element={
                                     <ProtectedRoute>
-                                        <NewRoom />
+                                        <NewOrderBill />
                                     </ProtectedRoute>
                                 }
                             />
@@ -165,7 +171,43 @@ function App() {
                                 path='new'
                                 element={
                                     <ProtectedRoute>
-                                        <NewRoom />
+                                        <NewWarehouseReceipt />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Route>
+                        <Route path='warehouse-export'>
+                            <Route
+                                index
+                                element={
+                                    <ProtectedRoute>
+                                        <List columns={warehouseExportColumns} />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path=':warehouseExportId'
+                                element={
+                                    <ProtectedRoute>
+                                        <Single />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path='new'
+                                element={
+                                    <ProtectedRoute>
+                                        <NewWarehouseExport />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Route>
+                        <Route path='chart'>
+                            <Route
+                                index
+                                element={
+                                    <ProtectedRoute>
+                                        <Statistic />
                                     </ProtectedRoute>
                                 }
                             />

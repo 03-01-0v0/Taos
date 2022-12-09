@@ -30,14 +30,12 @@ class OrderBillRepository {
         userId: number,
         paymentId: number,
         saleId: number,
-        createdDate: Date,
         note: string,
         orderBill: OrderBill
     ): OrderBill {
         orderBill.userId = userId;
         orderBill.paymentId = paymentId;
         orderBill.saleId = saleId;
-        orderBill.createdDate = createdDate;
         orderBill.note = note;
         return orderBill;
     }
@@ -45,8 +43,7 @@ class OrderBillRepository {
     public async addOrderBill(
         userId: number,
         paymentId: number,
-        saleId: number,
-        createdDate: Date,
+        saleId: number = 1,
         note: string
     ): Promise<OrderBill> {
         const user: User = await this._userRepository.findOneBy({id: userId});
@@ -62,7 +59,7 @@ class OrderBillRepository {
             throw new Error(`Cant find sale with id: ${saleId}`);
         }
         const orderBill = new OrderBill();
-        this.setOrderBill(userId, paymentId, saleId, createdDate, note, orderBill);
+        this.setOrderBill(userId, paymentId, saleId, note, orderBill);
         return this.saveOrderBill(orderBill);
     }
 
@@ -71,7 +68,6 @@ class OrderBillRepository {
         userId: number,
         paymentId: number,
         saleId: number,
-        createdDate: Date,
         note: string
     ): Promise<OrderBill> {
         const user: User = await this._userRepository.findOneBy({id: userId});
@@ -90,7 +86,7 @@ class OrderBillRepository {
         if (!orderBill) {
             throw new Error(`Cant find orderBill with id: ${id}`);
         }
-        this.setOrderBill(userId, paymentId, saleId, createdDate, note, orderBill);
+        this.setOrderBill(userId, paymentId, saleId, note, orderBill);
         return this.saveOrderBill(orderBill);
     }
 

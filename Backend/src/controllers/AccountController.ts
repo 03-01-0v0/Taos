@@ -23,24 +23,28 @@ class AccountController {
         }
     }
 
-    public async createAccount(req: Request, res: Response, next: NextFunction) {
+    public async createAccount(req: Request, res: Response, next: NextFunction) {        
         try {
-            const body = req.body;
-            const {authorizationId, userId, email, password} = body.params;
-            const user = await userRepositoryController.findUserByEmail(email);
-            if (user) {
-                return next(createError(419, 'Email exits'));
+            const body = req.body;     
+            const {email, userId, password, authorizationId, img} = body.params;
+            console.log(body);
+            const user = await userRepositoryController.findUserByEmail(email);      
+            if (!user) {
+                return next(createError(419, 'Email does not exits'));
             }
-            const authorization = authRepositoryController.getAuthorizationById(authorizationId);
-            if (authorization) {
-                return next(createError(419, 'Authorization exits'));
+            const authorization = await authRepositoryController.getAuthorizationById(Number(authorizationId));
+            console.log(authorization);
+            
+            if (!authorization) {
+                return next(createError(419, 'Authorization does not exits'));
             }
             const hashPassword = bcrypt.hashSync(password, SALT);
             const newAccount = await accountRepositoryController.addAccount(
-                authorizationId,
-                userId,
+                Number(authorizationId),
+                Number(userId),
                 email,
-                hashPassword
+                hashPassword,
+                img
             );
             if (!newAccount) {
                 return next(createError(500, 'Cant create account'));
@@ -57,8 +61,8 @@ class AccountController {
 
     public async updateAccount(req, Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
-            const {id, authorizationId, userId, email, password} = body;
+            const query = req.query;
+            const {id, authorizationId, userId, email, password, img} = query;
             const user = await userRepositoryController.findUserByEmail(email);
             if (user) {
                 return next(createError(419, 'Email exits'));
@@ -73,7 +77,8 @@ class AccountController {
                 authorizationId,
                 userId,
                 email,
-                hashPassword
+                hashPassword,
+                img
             );
             res.status(200).json({
                 success: true,
@@ -85,11 +90,11 @@ class AccountController {
         }
     }
 
-    public async deleteAccount(req: Request, res: Response, next: NextFunction) {
+    public async deleteAccount(req: Request, res: Response, next: NextFunction) {        
         try {
-            const body = req.body;
-            const {id} = body;
-            const account = await accountRepositoryController.removeAccount(id);
+            const query = req.query;
+            const {id} = query;
+            const account = await accountRepositoryController.removeAccount(Number(id));
             res.status(200).json({
                 success: true,
                 message: 'DELETED',

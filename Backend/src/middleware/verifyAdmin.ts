@@ -14,7 +14,7 @@ interface payload {
     exp: any;
 }
 
-const verifyAdmin = async (req: Request, res: Response, next: NextFunction) => {
+const verifyAdmin = async (req: Request, res: Response, next: NextFunction) => {    
     try {
         const token = await req.header('Authorization').replace('Bearer ', '');
         if (!token) {

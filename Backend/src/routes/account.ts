@@ -1,6 +1,7 @@
 import * as express from 'express';
 import verifyAdmin from '../middleware/verifyAdmin';
 import AccountController from '../controllers/AccountController';
+import { upload } from '..';
 const router = express.Router();
 
 router.get('/', AccountController.getAll);

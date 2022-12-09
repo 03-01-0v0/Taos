@@ -299,3 +299,48 @@ export const warehouseReceiptColumns = [
         },
     },
 ];
+
+export const warehouseExportColumns = [
+    {field: 'id', headerName: 'ID', width: 70},
+    {
+        field: 'productId',
+        headerName: 'Product ID',
+        width: 200,
+    },
+    {
+        field: 'name',
+        headerName: 'Product',
+        width: 330,
+    },
+    {
+        field: 'creatorId',
+        headerName: 'Creator ID',
+        width: 200,
+    },
+    {
+        field: 'userName',
+        headerName: 'Receiptor',
+        width: 200,
+    },
+    {
+        field: 'quantity',
+        headerName: 'Quantity',
+        width: 100,
+    },
+    {
+        field: 'color',
+        headerName: 'Color',
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <div style={{backgroundColor:params.row.color, color: params.row.color}} className='cellWithColor'>
+                </div>
+            );
+        },
+    },
+    {
+        field: 'capacity',
+        headerName: 'Capacity',
+        width: 150,
+    },
+];

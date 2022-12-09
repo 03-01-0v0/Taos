@@ -39,9 +39,13 @@ class UserController {
 
     public async createUser(req: Request, res: Response, next: NextFunction) {
         try {
+            console.log('zoo');
+            
             const body = req.body;
             const {name, password, email, address, phoneNumber} = body.params;
             const user = await userRepositoryController.findUserByEmail(email);
+            console.log(user);
+            
             if (user) {
                 return next(createError(419, 'Email exits'));
             }
@@ -97,9 +101,9 @@ class UserController {
 
     public async deleteUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const body = req.body;
-            const {id} = body;
-            const user = await userRepositoryController.removeUser(id);
+            const query = req.query;            
+            const {id} = query;
+            const user = await userRepositoryController.removeUser(Number(id));
             res.status(200).json({
                 success: true,
                 message: 'DELETED',

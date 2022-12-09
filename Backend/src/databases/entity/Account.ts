@@ -25,4 +25,9 @@ export class Account {
         default: ''
     })
     token: string;
+
+    @Column({
+        default: ''
+    })
+    img: string;
 }

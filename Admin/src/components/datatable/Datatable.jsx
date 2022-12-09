@@ -4,23 +4,54 @@ import { userColumns, userRows } from "../../datatablesource";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
-import axios from "axios";
+import HashLoader from "react-spinners/HashLoader";
+import axiosClient from '../api/axiosClient';
+import Swal from 'sweetalert2';
 
 const Datatable = ({columns}) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
-  const [list, setList] = useState();
-  const { data, loading, error } = useFetch(`/${path}`);
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await axiosClient.get(path);
+    setList(res.data.data);
+    setLoading(false);
+  }
 
   useEffect(() => {
-    console.log(data);
-    setList(data);
-  }, [data]);
+    fetchData();
+  }, []);
+
 
   const handleDelete = async (id) => {
+    console.log(id);
     try {
-      await axios.delete(`/${path}/${id}`);
-      setList(list.filter((item) => item._id !== id));
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        }).then(async (result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            const params = {id};
+            const res = await axiosClient.delete(path, {params});
+            if (res.data.message === 'DELETED') {
+                Swal.fire('Saved!', '', 'success');
+                await fetchData();
+            } else {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Something went wrong!',
+              })
+            }
+        } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+        }
+        })
     } catch (err) {}
   };
 
@@ -46,8 +77,13 @@ const Datatable = ({columns}) => {
       },
     },
   ];
+  const cssOverride = {
+    display: "block",
+    margin: "400px auto",
+    verticalAlign: 'middle'
+  };
   if (loading)
-    return <div>Loading</div>
+    return <HashLoader cssOverride={cssOverride} loading={loading} color='#6439FF' />
   return (
     <div className="datatable">
       <div className="datatableTitle">
@@ -59,7 +95,7 @@ const Datatable = ({columns}) => {
               Export
             </Link>
           }
-                  {
+          {
             path === 'order-bill' &&
             <Link to={`/${path}/new`} className="link">
               Export

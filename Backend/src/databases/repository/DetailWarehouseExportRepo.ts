@@ -16,7 +16,8 @@ class DetailWarehouseExportRepo {
     }
 
     public async getAllDetailWarehouseExport(): Promise<DetailWarehouseExport[]> {
-        return this._detailWarehouseExportRepo.find();
+        return this._detailWarehouseExportRepo.query(`SELECT detail_warehouse_export.id, "warehouseExportId", warehouse_export_user."creatorId", warehouse_export_user."receiptId", warehouse_export_user."userName", name, detail_warehouse_export."productId", detail_warehouse_export.quantity, detail_warehouse_export."createdDate", detail_warehouse_export."updatedDate", detail_warehouse_export.color, detail_warehouse_export.capacity FROM public.detail_warehouse_export left join warehouse_export_user on "warehouseExportId" = warehouse_export_user.id
+        left join product on "productId" = product.id;`);
     }
 
     public async getWarehouseExportById(id: number): Promise<DetailWarehouseExport> {
@@ -27,18 +28,24 @@ class DetailWarehouseExportRepo {
         warehouseExportId: number,
         productId: number,
         quantity: number,
+        color: string,
+        capacity: string,
         detailWarehouseExport: DetailWarehouseExport
     ): DetailWarehouseExport {
         detailWarehouseExport.warehouseExportId = warehouseExportId;
         detailWarehouseExport.productId = productId;
         detailWarehouseExport.quantity = quantity;
+        detailWarehouseExport.color = color;
+        detailWarehouseExport.capacity = capacity;
         return detailWarehouseExport;
     }
 
     public async addDetailWarehouseExport(
         warehouseExportId: number,
         productId: number,
-        quantity: number
+        quantity: number,
+        color: string,
+        capacity: string,
     ): Promise<DetailWarehouseExport> {
         const warehouseExport: WarehouseExport = await this._warehouseExportRepo.findOneBy({
             id: warehouseExportId,
@@ -49,14 +56,18 @@ class DetailWarehouseExportRepo {
         const product: Product = await this._productRepository.findOneBy({id: productId});
         if (!product) {
             throw new Error(`Cant find product with id: ${productId}`);
-        }
+        }        
         const detailWarehouseExport = new DetailWarehouseExport();
         this.setDetailWarehouseExport(
             warehouseExportId,
             productId,
             quantity,
+            color,
+            capacity,
             detailWarehouseExport
         );
+        console.log(detailWarehouseExport);
+        
         return this.saveDetailWarehouseExport(detailWarehouseExport);
     }
 
@@ -64,7 +75,9 @@ class DetailWarehouseExportRepo {
         id: number,
         warehouseExportId: number,
         productId: number,
-        quantity: number
+        quantity: number,
+        color: string,
+        capacity: string,
     ): Promise<DetailWarehouseExport> {
         const warehouseExport: WarehouseExport = await this._warehouseExportRepo.findOneBy({
             id: warehouseExportId,
@@ -84,6 +97,8 @@ class DetailWarehouseExportRepo {
             warehouseExportId,
             productId,
             quantity,
+            color,
+            capacity,
             detailWarehouseExport
         );
         return this.saveDetailWarehouseExport(detailWarehouseExport);
@@ -100,7 +115,7 @@ class DetailWarehouseExportRepo {
     public async saveDetailWarehouseExport(
         detailWarehouseExport: DetailWarehouseExport
     ): Promise<DetailWarehouseExport> {
-        if (detailWarehouseExport) {
+        if (detailWarehouseExport) {            
             return this._detailWarehouseExportRepo.save(detailWarehouseExport);
         }
         return null;

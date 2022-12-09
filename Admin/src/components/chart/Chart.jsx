@@ -8,16 +8,48 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "January", Total: 1200 },
-  { name: "February", Total: 2100 },
-  { name: "March", Total: 800 },
-  { name: "April", Total: 1600 },
-  { name: "May", Total: 900 },
-  { name: "June", Total: 1700 },
-];
+import axiosClient from '../api/axiosClient';
+import { useEffect, useState } from 'react';
+import HashLoader from 'react-spinners/HashLoader';
 
-const Chart = ({ aspect, title }) => {
+// const data = [
+//   { name: "January", Total: 1200 },
+//   { name: "February", Total: 2100 },
+//   { name: "March", Total: 800 },
+//   { name: "April", Total: 1600 },
+//   { name: "May", Total: 900 },
+//   { name: "June", Total: 1700 },
+// ];
+
+const Chart = ({ aspect, title, path }) => {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await axiosClient.get(path);
+    const formatData = res.data.data?.map(e => {
+      return {
+        name: e.name,
+        Total: e.sum || e.count
+      }
+    })
+    setData(formatData);
+    console.log(data);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const cssOverride = {
+    display: "block",
+    margin: "400px auto",
+    verticalAlign: 'middle'
+  };
+  if (loading)
+    return <HashLoader cssOverride={cssOverride} loading={loading} color='#6439FF' />
   return (
     <div className="chart">
       <div className="title">{title}</div>

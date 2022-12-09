@@ -20,12 +20,14 @@ class AccountRepository {
         userId: number,
         name: string,
         password: string,
+        img: string,
         account: Account
     ): Account {
         account.authorizationId = authorizationId;
         account.userId = userId;
         account.name = name;
         account.password = password;
+        account.img = img;
         return account;
     }
 
@@ -52,7 +54,8 @@ class AccountRepository {
         authorizationId: number,
         userId: number,
         name: string,
-        password: string
+        password: string,
+        img: string = ''
     ): Promise<Account> {
         const auth: Authorization = await this._authRepository.findOneBy({id: authorizationId});
         if (!auth) {
@@ -63,7 +66,7 @@ class AccountRepository {
             throw new Error(`Cant find user with id: ${userId}`);
         }
         const account = new Account();
-        this.setAccount(authorizationId, userId, name, password, account);
+        this.setAccount(authorizationId, userId, name, password, img, account);
 
         return this._accountRepository.save(account);
     }
@@ -73,7 +76,8 @@ class AccountRepository {
         authorizationId: number,
         userId: number,
         name: string,
-        password: string
+        password: string,
+        img: string
     ): Promise<Account> {
         const account = await this._accountRepository.findOneBy({id});
         if (!account) {
@@ -83,7 +87,7 @@ class AccountRepository {
         if (!user) {
             throw new Error(`Cant find user with id: ${userId}`);
         }
-        this.setAccount(authorizationId, userId, name, password, account);
+        this.setAccount(authorizationId, userId, name, password, img, account);
         return this.saveAccount(account);
     }
 

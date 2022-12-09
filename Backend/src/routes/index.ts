@@ -7,7 +7,7 @@ import accountRouter from './account';
 import orderBillRouter from './orderBill';
 import warehouseReceiptRouter from './warehouseReceipt';
 import warehouseExportRouter from './warehouseExport';
-
+import uploadRouter from './upload';
 
 
 const route = (app: any) => {
@@ -20,6 +20,7 @@ const route = (app: any) => {
     app.use('/order-bill', orderBillRouter);
     app.use('/warehouse-receipt', warehouseReceiptRouter);
     app.use('/warehouse-export', warehouseExportRouter);
+    app.use('/upload', uploadRouter);
 };
 
 module.exports = route;

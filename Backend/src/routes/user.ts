@@ -7,7 +7,7 @@ import { upload } from '..';
 const router = express.Router();
 
 router.get('/', UserController.getAll);
-router.post('/',upload.single('picture'), verifyAdmin, UserController.createUser);
+router.post('/', verifyAdmin, UserController.createUser);
 router.put('/', verifyAdmin, UserController.updateUser);
 router.delete('/', verifyAdmin, UserController.deleteUser);
 

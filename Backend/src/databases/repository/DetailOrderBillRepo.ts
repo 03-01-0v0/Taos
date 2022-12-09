@@ -21,6 +21,16 @@ class DetailOrderBillRepo {
         FROM public.detail_order_bill left join order_status on detail_order_bill."orderId" = order_status."orderId" left join product on "productId" = product.id;`);
     }
 
+    public async getDataStatistic(): Promise<DetailOrderBill[]> {
+        return this._detailOrderBillRepo.query(`SELECT product.name, sum(detail_order_bill.quantity * detail_order_bill.price)
+        FROM public.detail_order_bill left join product on "productId" = product.id group by product.name;`);
+    }
+
+    public async getDataCountStatistic(): Promise<DetailOrderBill[]> {
+        return this._detailOrderBillRepo.query(`SELECT product.name, sum(detail_order_bill.quantity)
+        FROM public.detail_order_bill left join product on "productId" = product.id group by product.name;`);
+    }
+
     public async getDetailOrderBillById(id: number): Promise<DetailOrderBill> {
         return this._detailOrderBillRepo.findOneBy({id});
     }

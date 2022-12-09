@@ -1,0 +1,34 @@
+.statistic {
+    display: flex;
+    width: 100%;
+    .statisticContainer {
+        flex: 6;
+        .chartGroup {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+            .wrapper {
+                width: calc(50% - 20px);
+                .data {
+                    box-shadow: 2px 4px 10px 1px rgb(201 201 201 / 47%);
+                    color: gray;
+                    padding: 10px;
+                    .title {
+                        height: 40px;
+                        border-bottom: 2px solid rgb(201 201 201 / 47%);
+                        font-size: 2rem;
+                        padding: 5px;
+                    }
+                    .content {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px 10px;
+                        padding: 10px 5px;
+                        font-size: 1.3rem;
+                    }
+                }
+            }
+        }
+    }
+}

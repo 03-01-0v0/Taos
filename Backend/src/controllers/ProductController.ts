@@ -34,23 +34,22 @@ class ProductController {
                 description,
                 isSell,
             } = body.params;
-            const listImg = img.split(' ');
             const product = await productRepositoryController.addProduct(
                 productTypeId,
                 unitId,
                 code,
                 name,
-                listImg,
-                quantity,
-                purchasePrice,
-                price,
+                img,
+                Number(quantity),
+                Number(purchasePrice),
+                Number(price),
                 shortDescription,
                 description,
                 isSell
             );
             res.status(201).json({
                 success: true,
-                message: 'OK',
+                message: 'CREATED',
                 data: product,
             });
         } catch (err) {

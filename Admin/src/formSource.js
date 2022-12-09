@@ -1,21 +1,13 @@
 export const userInputs = [
   {
-    id: "username",
+    id: "name",
     label: "Username",
     type: "text",
-    placeholder: "john_doe",
   },
   {
     id: "email",
     label: "Email",
     type: "email",
-    placeholder: "john_doe@gmail.com",
-  },
-  {
-    id: "phone",
-    label: "Phone",
-    type: "text",
-    placeholder: "+1 234 567 89",
   },
   {
     id: "password",
@@ -23,49 +15,206 @@ export const userInputs = [
     type: "password",
   },
   {
-    id: "country",
-    label: "Country",
+    id: "phoneNumber",
+    label: "Phone Number",
     type: "text",
-    placeholder: "USA",
+    placeholder: "+84 98 123 4567",
   },
   {
-    id: "city",
-    label: "City",
+    id: "address",
+    label: "Address",
     type: "text",
-    placeholder: "USA",
+    placeholder: "VN",
+  },
+];
+
+export const accountInputs = [
+  {
+    id: "userId",
+    label: "UserId",
+    type: "text",
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "text",
+  },
+  {
+    id: "password",
+    label: "Password",
+    type: "password",
   },
 ];
 
 export const productInputs = [
   {
-    id: 1,
-    label: "Title",
-    type: "text",
-    placeholder: "Apple Macbook Pro",
+    id: "productTypeId",
+    label: "Product Type Id",
+    type: "number",
   },
   {
-    id: 2,
-    label: "Description",
-    type: "text",
-    placeholder: "Description",
+    id: "unitId",
+    label: "Unit Id",
+    type: "number",
   },
   {
-    id: 3,
-    label: "Category",
+    id: "code",
+    label: "Code",
     type: "text",
-    placeholder: "Computers",
   },
   {
-    id: 4,
+    id: "name",
+    label: "Name",
+    type: "text",
+  },
+  {
+    id: "quantity",
+    label: "Quantity",
+    type: "number",
+  },
+  {
+    id: "capacity",
+    label: "Capacity",
+    type: "text",
+  },
+  {
+    id: "purchasePrice",
+    label: "PurchasePrice",
+    type: "number",
+  },
+  {
+    id: "price",
     label: "Price",
-    type: "text",
-    placeholder: "100",
+    type: "number",
   },
   {
-    id: 5,
-    label: "Stock",
+    id: "shortDescription",
+    label: "ShortDescription",
     type: "text",
-    placeholder: "in stock",
+  }
+];
+
+export const warehouseExport = [
+  {
+    id: "creatorId",
+    label: "Creator Id",
+    type: "number",
+  },
+  {
+    id: "receiptId",
+    label: "Receipt Id",
+    type: "number",
+  },
+  {
+    id: "warehouseExportId",
+    label: "Warehouse Export Id",
+    type: "number",
+  },
+  {
+    id: "productId",
+    label: "Product Id",
+    type: "number",
+  },
+  {
+    id: "color",
+    label: "Color",
+    type: "text",
+  },
+  {
+    id: "quantity",
+    label: "Quantity",
+    type: "number",
+  },
+  {
+    id: "capacity",
+    label: "Capacity",
+    type: "text",
+  },
+  {
+    id: "note",
+    label: "Note",
+    type: "text",
+  },
+];
+
+export const warehouseReceipt = [
+  {
+    id: "creatorId",
+    label: "Creator Id",
+    type: "number",
+  },
+  {
+    id: "warehouseReceiptId",
+    label: "Warehouse Receipt Id",
+    type: "number",
+  },
+  {
+    id: "productId",
+    label: "Product Id",
+    type: "number",
+  },
+  {
+    id: "color",
+    label: "Color",
+    type: "text",
+  },
+  {
+    id: "quantity",
+    label: "Quantity",
+    type: "number",
+  },
+  {
+    id: "capacity",
+    label: "Capacity",
+    type: "text",
+  },
+  {
+    id: "note",
+    label: "Note",
+    type: "text",
+  },
+];
+
+export const orderBillInputs = [
+  {
+    id: "orderId",
+    label: "Order Id",
+    type: "number",
+  },
+  {
+    id: "userId",
+    label: "User Id",
+    type: "number",
+  },
+  {
+    id: "productId",
+    label: "Product Id",
+    type: "number",
+  },
+  {
+    id: "price",
+    label: "Price",
+    type: "number",
+  },
+  {
+    id: "color",
+    label: "Color",
+    type: "text",
+  },
+  {
+    id: "quantity",
+    label: "Quantity",
+    type: "number",
+  },
+  {
+    id: "capacity",
+    label: "Capacity",
+    type: "text",
+  },
+  {
+    id: "note",
+    label: "Note",
+    type: "text",
   },
 ];
 

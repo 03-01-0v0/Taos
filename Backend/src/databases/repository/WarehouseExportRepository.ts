@@ -16,15 +16,13 @@ class WarehouseExportRepository {
     }
 
     public setWarehouseExport(
-        accountId: number,
-        userId: number,
-        createdDate: Date,
+        creatorId: number,
+        receiptId: number,
         note: string,
         warehouseExport: WarehouseExport
     ): WarehouseExport {
-        warehouseExport.accountId = accountId;
-        warehouseExport.userId = userId;
-        warehouseExport.createdDate = createdDate;
+        warehouseExport.creatorId = creatorId;
+        warehouseExport.receiptId = receiptId;
         warehouseExport.note = note;
         return warehouseExport;
     }
@@ -38,44 +36,43 @@ class WarehouseExportRepository {
     }
 
     public async addWarehouseExport(
-        accountId: number,
-        userId: number,
-        createdDate: Date,
-        note: string
+        creatorId: number,
+        receiptId: number,
+        note: string,
     ): Promise<WarehouseExport> {
-        const account: Account = await this._accountRepository.findOneBy({id: accountId});
+        const account: Account = await this._accountRepository.findOneBy({id: creatorId});
         if (!account) {
-            throw new Error(`Cant find account with id: ${accountId}`);
+            throw new Error(`Cant find account with id: ${creatorId}`);
         }
-        const user: User = await this._userRepository.findOneBy({id: userId});
+        const user: User = await this._userRepository.findOneBy({id: receiptId});
         if (!user) {
-            throw new Error(`Cant find user with id: ${userId}`);
+            throw new Error(`Cant find user with id: ${receiptId}`);
         }
         const warehouseExport = new WarehouseExport();
-        this.setWarehouseExport(accountId, userId, createdDate, note, warehouseExport);
+        this.setWarehouseExport(creatorId, receiptId, note, warehouseExport);
         return this.saveWarehouseExport(warehouseExport);
     }
 
     public async updateWarehouseExport(
         id: number,
-        accountId: number,
-        userId: number,
+        creatorId: number,
+        receiptId: number,
         createdDate: Date,
         note: string
     ): Promise<WarehouseExport> {
-        const account: Account = await this._accountRepository.findOneBy({id: accountId});
+        const account: Account = await this._accountRepository.findOneBy({id: creatorId});
         if (!account) {
-            throw new Error(`Cant find account with id: ${accountId}`);
+            throw new Error(`Cant find account with id: ${creatorId}`);
         }
-        const user: User = await this._userRepository.findOneBy({id: userId});
+        const user: User = await this._userRepository.findOneBy({id: receiptId});
         if (!user) {
-            throw new Error(`Cant find user with id: ${userId}`);
+            throw new Error(`Cant find user with id: ${receiptId}`);
         }
         const warehouseExport = await this._warehouseExportRepository.findOneBy({id});
         if (!warehouseExport) {
             throw new Error(`Cant find warehouseExport with id: ${id}`);
         }
-        this.setWarehouseExport(accountId, userId, createdDate, note, warehouseExport);
+        this.setWarehouseExport(creatorId, receiptId, note, warehouseExport);
         return this.saveWarehouseExport(warehouseExport);
     }
 
