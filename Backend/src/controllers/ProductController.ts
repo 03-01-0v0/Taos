@@ -5,6 +5,7 @@ import {createError} from '../utils/createError';
 class ProductController {
     public async getAll(req: Request, res: Response, next: NextFunction) {
         try {
+            // await productRepositoryController.addListProduct();
             const listProduct = await productRepositoryController.getAllProduct();
             if (!listProduct) {
                 return next(createError(500, 'Internal Server Error'));
@@ -131,6 +132,51 @@ class ProductController {
                 message: 'OK',
                 data: lstProduct,
             });
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    public async getProductSlider(req: Request, res: Response, next: NextFunction) {
+        try {            
+            const data1 = await productRepositoryController.getProductSlider('blue', 'iPhone 13 Pro');
+            const data2 = await productRepositoryController.getProductSlider('gold', 'iPhone 14 Pro Max');
+            const data3 = await productRepositoryController.getProductSlider('purple', 'iPhone 14 Pro Max');
+            const lstProduct = [{...data1}, {...data2}, {...data3}];            
+            res.status(200).json({
+                success: true,
+                message: 'OK',
+                data: lstProduct,
+            });
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    public async getListProductByName(req: Request, res: Response, next: NextFunction) {
+        try {
+            const query = req.query;
+            const name = query.name as string;
+            const lstProduct = await productRepositoryController.getProductByName(name);
+            res.status(200).json({
+                success: true,
+                message: 'OK',
+                data: lstProduct,
+            });
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    public async getProductById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id;
+            const product = await productRepositoryController.getProductById(Number(id));
+            res.status(200).json({
+                success: true,
+                message: 'OK',
+                data: product
+            })
         } catch(err) {
             next(err);
         }

@@ -23,6 +23,20 @@ $colors: (
     "black": #000,
     "main": $main-color,
     "red": #ff0000,
+    "blue-prod": #4267b2,
+    "gold-prod": #f4e6cc,
+    "silver-prod": #f0f2f2,
+    "green-prod": #304733,
+    "purple-prod": #4b4353,
+    "gray-prod": #403e3c,
+    "pink-prod": #ebb9b0,
+    "blue-shape": rgb(66, 103, 178, 0.2),
+    "gold-shape": rgb(244, 230, 204, 0.4),
+    "silver-shape": rgb(240, 242, 242, 0.2),
+    "green-shape": rgb(48, 71, 51, 0.2),
+    "purple-shape": rgb(75, 67, 83, 0.4),
+    "gray-shape": rgb(64, 62, 60, 0.2),
+    "pink-shape": rgb(235,185,176, 0.3)
 );
 
 $mobile-width: 600px;

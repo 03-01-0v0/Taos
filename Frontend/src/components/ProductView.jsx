@@ -11,31 +11,40 @@ import { remove } from '../redux/product-modal/productModalSlice'
 import Button from './Button'
 import numberWithCommas from '../utils/numberWithCommas'
 
+import slugify from 'slugify'
+
 const ProductView = props => {
 
     const dispatch = useDispatch()
 
     let product = props.product
+    const colors = ['blue', 'gray', 'green', 'gold', 'pink'];
+    const capacities = ['64', '128', '256', '512'];
 
     if (product === undefined) product = {
-        title: "",
+        id: '',
+        code: '',
+        capacity: '',
+        color: '',
+        description: '',
+        shortDescription: '',
+        img: ['1', '2'],
+        isShell: '',
+        name: '',
         price: '',
-        image01: null,
-        image02: null,
-        categorySlug: "",
-        colors: [],
-        slug: "",
-        size: [],
-        description: ""
+        purchasePrice: '',
+        quantity: '',
+        uniId: ''
     }
-
-    const [previewImg, setPreviewImg] = useState(product.image01)
+    const [previewImg, setPreviewImg] = useState(product.img[0])
 
     const [descriptionExpand, setDescriptionExpand] = useState(false)
 
     const [color, setColor] = useState(undefined)
 
     const [size, setSize] = useState(undefined)
+
+    const [capacity, setCapacity] = useState(undefined)
 
     const [quantity, setQuantity] = useState(1)
 
@@ -48,9 +57,10 @@ const ProductView = props => {
     }
 
     useEffect(() => {
-        setPreviewImg(product.image01)
+        setPreviewImg(product.img[0])
         setQuantity(1)
         setColor(undefined)
+        setCapacity(undefined);
         setSize(undefined)
     }, [product])
 
@@ -60,8 +70,8 @@ const ProductView = props => {
             return false
         }
 
-        if (size === undefined) {
-            alert('Vui lòng chọn kích cỡ!')
+        if (capacity === undefined) {
+            alert('Vui lòng chọn dung lượng!')
             return false
         }
 
@@ -71,9 +81,9 @@ const ProductView = props => {
     const addToCart = () => {
         if (check()) {
             let newItem = {
-                slug: product.slug,
+                slug: slugify(product.name.toLowerCase()),
                 color: color,
-                size: size,
+                capacity: capacity,
                 price: product.price,
                 quantity: quantity
             }
@@ -88,9 +98,9 @@ const ProductView = props => {
     const goToCart = () => {
         if (check()) {
             let newItem = {
-                slug: product.slug,
+                slug: slugify(product.name.toLowerCase()),
                 color: color,
-                size: size,
+                capacity: capacity,
                 price: product.price,
                 quantity: quantity
             }
@@ -107,15 +117,15 @@ const ProductView = props => {
         <div className="product">
             <div className="product__images">
                 <div className="product__images__list">
-                    <div className="product__images__list__item" onClick={() => setPreviewImg(product.image01)}>
-                        <img src={product.image01} alt="" />
+                    <div className="product__images__list__item" onClick={() => setPreviewImg(product.img[0])}>
+                        <img src={`http://localhost:3001/assets/${product.img[0]}.png`} alt="" />
                     </div>
-                    <div className="product__images__list__item" onClick={() => setPreviewImg(product.image02)}>
-                        <img src={product.image02} alt="" />
+                    <div className="product__images__list__item" onClick={() => setPreviewImg(product.img[1])}>
+                        <img src={`http://localhost:3001/assets/${product.img[1]}.png`} alt="" />
                     </div>
                 </div>
                 <div className="product__images__main">
-                    <img src={previewImg} alt="" />
+                    <img src={`http://localhost:3001/assets/${previewImg}.png`} alt="" />
                 </div>
                 <div className={`product-description ${descriptionExpand ? 'expand' : ''}`}>
                     <div className="product-description__title">
@@ -132,7 +142,7 @@ const ProductView = props => {
                 </div>
             </div>
             <div className="product__info">
-                <h1 className="product__info__title">{product.title}</h1>
+                <h1 className="product__info__title">{product.name}</h1>
                 <div className="product__info__item">
                     <span className="product__info__item__price">
                         {numberWithCommas(product.price)}
@@ -144,9 +154,9 @@ const ProductView = props => {
                     </div>
                     <div className="product__info__item__list">
                         {
-                            product.colors.map((item, index) => (
+                            colors.map((item, index) => (
                                 <div key={index} className={`product__info__item__list__item ${color === item ? 'active' : ''}`} onClick={() => setColor(item)}>
-                                    <div className={`circle bg-${item}`}></div>
+                                    <div className={`circle bg-${item}-prod`}></div>
                                 </div>
                             ))
                         }
@@ -154,12 +164,12 @@ const ProductView = props => {
                 </div>
                 <div className="product__info__item">
                     <div className="product__info__item__title">
-                        Kích cỡ
+                        Dung lượng
                     </div>
                     <div className="product__info__item__list">
                         {
-                            product.size.map((item, index) => (
-                                <div key={index} className={`product__info__item__list__item ${size === item ? 'active' : ''}`} onClick={() => setSize(item)}>
+                            capacities.map((item, index) => (
+                                <div key={index} className={`product__info__item__list__item ${size === item ? 'active' : ''}`} onClick={() => setCapacity(item)}>
                                     <span className="product__info__item__list__item__size">
                                         {item}
                                     </span>
@@ -209,5 +219,6 @@ const ProductView = props => {
 ProductView.propTypes = {
     product: PropTypes.object
 }
+
 
 export default withRouter(ProductView)

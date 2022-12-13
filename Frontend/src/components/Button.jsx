@@ -8,7 +8,6 @@ const Button = props => {
     const size = props.size ? 'btn-' + props.size : ''
 
     const animate = props.animate ? 'btn-animate' : ''
-
     return (
         <button
             className={`btn ${bg} ${size} ${animate}`}

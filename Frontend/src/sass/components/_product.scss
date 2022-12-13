@@ -35,7 +35,7 @@
                 position: absolute;
                 top: 0;
                 left: 50%;
-                height: 100%;
+                height: 70%;
                 transform: translateX(-50%);
             }
         }
@@ -152,7 +152,7 @@
     height: 400px;
     overflow: hidden;
     position: relative;
-
+    margin-top: -200px;
     @include mobile {
         display: none;
     }

@@ -9,12 +9,44 @@ import Button from '../components/Button'
 
 import productData from '../assets/fake-data/products'
 import numberWithCommas from '../utils/numberWithCommas'
+import slugify from 'slugify'
+import { useQuery } from 'react-query'
+import productApi from '../api/productApi'
 
 const Cart = () => {
 
+    const [products, setProducts] = useState([]);
+    const fetchListData = async () => {
+        const res = await productApi.getListProduct();
+        return res.data;
+    };
+    const listProductQuery = useQuery('lstCartProduct', fetchListData);
+    useEffect(() => {
+        if (listProductQuery.data) {
+            setProducts(listProductQuery.data);
+        }
+        else
+            setProducts([]);
+    }, [listProductQuery.data]);
     const cartItems = useSelector((state) => state.cartItems.value)
 
-    const [cartProducts, setCartProducts] = useState(productData.getCartItemsInfo(cartItems))
+    useEffect(() => {
+        if (products) {
+            let res = [];
+            if (cartItems && cartItems.length) {
+                cartItems.forEach(e => {
+                    let product = products.find(product => slugify(product.name.toLowerCase()) === e.slug)
+                    res.push({
+                        ...e,
+                        product: product
+                    })
+                })
+            }
+            setCartProducts(res);
+        }
+    }, [products]);
+
+    const [cartProducts, setCartProducts] = useState([])
 
     const [totalProducts, setTotalProducts] = useState(0)
 

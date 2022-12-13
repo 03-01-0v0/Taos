@@ -10,4 +10,12 @@
         text-transform: capitalize;
         text-align: center;
     }
+    &__body {
+        .banner__group {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+        }
+    }
+
 }

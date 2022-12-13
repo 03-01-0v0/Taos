@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Helmet from '../components/Helmet'
 import Section, {SectionBody, SectionTitle} from '../components/Section'
@@ -7,19 +7,63 @@ import ProductCard from '../components/ProductCard'
 import ProductView from '../components/ProductView'
 
 import productData from '../assets/fake-data/products'
+import { useQuery } from 'react-query'
+import productApi from '../api/productApi'
+import { useParams } from 'react-router-dom'
+import slugify from 'slugify'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 const Product = props => {
+    
+    const {id} = useParams();
+    const fetchData = async () => {
+        const res = await productApi.getProductById(id);
+        return res.data;
+    }
 
-    const product = productData.getProductBySlug(props.match.params.slug)
+    const fetchListData = async () => {
+        const res = await productApi.getListProduct();
+        return res.data;
+    };
 
-    const relatedProducts = productData.getProducts(8)
+    const initProduct = {
+        id: '',
+        code: '',
+        capacity: '',
+        color: '',
+        description: '',
+        shortDescription: '',
+        img: ['1', '2'],
+        isShell: '',
+        name: '',
+        price: '',
+        purchasePrice: '',
+        quantity: '',
+        uniId: ''
+    }
+
+    const [product, setProduct] = useState(initProduct);
+    const [relatedProducts, setRelatedProducts] = useState([]);
+    const productQuery = useQuery(`product-${id}`, fetchData);
+    const listProductQuery = useQuery('relatedProduct', fetchListData);
+    useEffect(() => {
+        if (productQuery.data && listProductQuery.data) {
+            setProduct(productQuery.data);
+            setRelatedProducts(listProductQuery.data.slice(-8));
+        } else {
+            setProduct(initProduct);
+            setRelatedProducts([]);
+        }
+    }, [listProductQuery.data, productQuery.data]);
 
     React.useEffect(() => {
         window.scrollTo(0,0)
     }, [product])
-
+    if (productQuery.isLoading) {
+        return <ClipLoader color={'#427782'}/>
+    } else 
     return (
-        <Helmet title={product.title}>
+        <Helmet title={product.shortDescription}>
             <Section>
                 <SectionBody>
                     <ProductView product={product}/>
@@ -40,11 +84,12 @@ const Product = props => {
                             relatedProducts.map((item, index) => (
                                 <ProductCard
                                     key={index}
-                                    img01={item.image01}
-                                    img02={item.image02}
-                                    name={item.title}
+                                    img01={item.img[0]}
+                                    img02={item.img.length < 2 ? item.img[0] : item.img[1]}
+                                    name={item.name + ' ' + item.capacity}
                                     price={Number(item.price)}
-                                    slug={item.slug}
+                                    slug={slugify(item.name.toLowerCase())}
+                                    idx={item.id}
                                 />   
                             ))
                         }

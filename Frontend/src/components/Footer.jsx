@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 import Grid from './Grid'
 
-import logo from '../assets/images/Logo-2.png'
-
 const footerAboutLinks = [
     {
         display: "Giới thiệu",
@@ -71,7 +69,7 @@ const Footer = () => {
                     </div>
                     <div>
                         <div className="footer__title">
-                            Về Yolo
+                            Về Taos Shop
                         </div>
                         <div className="footer__content">
                             {
@@ -104,11 +102,11 @@ const Footer = () => {
                     <div className="footer__about">
                         <p>
                             <Link to="/">
-                                <img src={logo} className="footer__logo" alt="" />
+                                <div className='footer__logo color-blue'>Taos Shop</div>
                             </Link>
                         </p>
                         <p>
-                            Hướng đến mục tiêu mang lại niềm vui ăn mặc mới mỗi ngày cho hàng triệu người tiêu dùng Việt. Hãy cùng Yolo hướng đến một cuộc sống năng động, tích cực hơn.
+                            Năm 2020, Taos Shop trở thành đại lý ủy quyền của Apple. Chúng tôi phát triển chuỗi cửa hàng tiêu chuẩn và Apple Mono Store nhằm mang đến trải nghiệm tốt nhất về sản phẩm và dịch vụ của Apple cho người dùng Việt Nam.
                         </p>
                     </div>
                 </Grid>

@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-import logo from '../assets/images/Logo-2.png'
-
 const mainNav = [
     {
         display: "Trang chủ",
@@ -10,15 +8,15 @@ const mainNav = [
     },
     {
         display: "Iphone",
-        path: "/catalog"
+        path: "/iphone"
     },
     {
         display: "Ipad",
-        path: "/catalog"
+        path: "/ipad"
     },
     {
         display: "Apple Watch",
-        path: "/catalog"
+        path: "/watch"
     },
     // {
     //     display: "Phụ kiện",
@@ -59,7 +57,7 @@ const Header = () => {
             <div className="container">
                 <div className="header__logo">
                     <Link to="/">
-                        <img src={logo} alt="" />
+                        <div className="logo color-blue">Taos Shop</div>
                     </Link>
                 </div>
                 <div className="header__menu">

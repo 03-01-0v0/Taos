@@ -1,16 +1,24 @@
 const category = [
     {
-        display: "Áo thun",
-        categorySlug: "ao-thun"
+        display: "iphone 13",
+        categorySlug: "iphone-13"
     },
     {
-        display: "Áo somi",
-        categorySlug: "ao-somi"
+        display: "iphone 13 Pro",
+        categorySlug: "iphone-13-pro"
     },
     {
-        display: "Quần jean",
-        categorySlug: "quan-jean"
-    }
+        display: "iphone 14",
+        categorySlug: "iphone-14"
+    },
+    {
+        display: "iphone 14 Pro",
+        categorySlug: "iphone-14-pro"
+    },
+    {
+        display: "iphone 14 Pro Max",
+        categorySlug: "iphone-14-pro-max"
+    },
 ]
 
 export default category

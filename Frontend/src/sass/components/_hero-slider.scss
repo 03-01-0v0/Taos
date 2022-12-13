@@ -118,9 +118,9 @@
             }
 
             img {
-                height: 100vh;
+                height: 50vh;
                 position: absolute;
-                bottom: 0;
+                bottom: 25%;
                 right: 0;
                 transform: scale(0) rotate(65deg);
                 transition: transform 0.5s
@@ -133,7 +133,7 @@
             }
 
             .shape {
-                $size: 472px;
+                $size: 500px;
                 height: $size;
                 width: $size;
                 position: absolute;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import Grid from './Grid'
 import ProductCard from './ProductCard'
+import slugify from 'slugify'
 
 const InfinityList = props => {
 
@@ -62,11 +63,12 @@ const InfinityList = props => {
                     data.map((item, index) => (
                         <ProductCard
                             key={index}
-                            img01={item.image01}
-                            img02={item.image02}
-                            name={item.title}
+                            img01={item.img[0]}
+                            img02={item.img.length < 2 ? item.img[0] : item.img[1]}
+                            name={item.name + ' ' + item.capacity}
                             price={Number(item.price)}
-                            slug={item.slug}
+                            slug={slugify(item.name.toLowerCase())}
+                            idx={item.id}
                         />
                     ))
                 }

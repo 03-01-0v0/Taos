@@ -6,21 +6,49 @@ import CheckBox from '../components/CheckBox'
 import productData from '../assets/fake-data/products'
 import category from '../assets/fake-data/category'
 import colors from '../assets/fake-data/product-color'
-import size from '../assets/fake-data/product-size'
+import capacity from '../assets/fake-data/product-capacity';
 import Button from '../components/Button'
 import InfinityList from '../components/InfinityList'
+import { useQuery } from 'react-query';
+import productApi from '../api/productApi';
+import ClipLoader from 'react-spinners/ClipLoader'
+import slugify from 'slugify'
+import Pagination from '../components/Pagination'
+import { useLocation } from 'react-router-dom'
 
 const Catalog = () => {
 
+    const location = useLocation();
+    const pathName = location.pathname.split('/');
+    console.log(pathName);
     const initFilter = {
         category: [],
         color: [],
-        size: []
+        capacity: []
     }
 
-    const productList = productData.getAllProducts()
+    const fetchProductData = async () => {
+        const res = await productApi.getListProductByName(pathName[1]);
+        return res.data;
+    }
 
-    const [products, setProducts] = useState(productList)
+    const productQuery = useQuery('product', fetchProductData);
+
+    
+    const [productList, setProductList] = useState([]);
+    
+    const [products, setProducts] = useState(productList);
+
+    useEffect(() => {
+        if (productQuery.data) {
+            setProductList(productQuery.data);
+            setProducts(productQuery.data);
+        }
+        else {
+            setProductList([]);
+            setProducts([]);
+        }
+    }, [productQuery.data]);
 
     const [filter, setFilter] = useState(initFilter)
 
@@ -33,8 +61,8 @@ const Catalog = () => {
                 case "COLOR":
                     setFilter({...filter, color: [...filter.color, item.color]})
                     break
-                case "SIZE":
-                    setFilter({...filter, size: [...filter.size, item.size]})
+                case "CAPACITY":
+                    setFilter({...filter, capacity: [...filter.capacity, item.capacity]})
                     break
                 default:
             }
@@ -48,9 +76,10 @@ const Catalog = () => {
                     const newColor = filter.color.filter(e => e !== item.color)
                     setFilter({...filter, color: newColor})
                     break
-                case "SIZE":
-                    const newSize = filter.size.filter(e => e !== item.size)
-                    setFilter({...filter, size: newSize})
+                case "CAPACITY":
+                    const newCapacity = filter.capacity.filter(e => e !== item.capacity)
+                    console.log(newCapacity);
+                    setFilter({...filter, capacity: newCapacity})
                     break
                 default:
             }
@@ -64,23 +93,22 @@ const Catalog = () => {
             let temp = productList
 
             if (filter.category.length > 0) {
-                temp = temp.filter(e => filter.category.includes(e.categorySlug))
+                temp = temp.filter(e => filter.category.includes(slugify(e.name.toLowerCase())))
             }
 
             if (filter.color.length > 0) {
                 temp = temp.filter(e => {
-                    const check = e.colors.find(color => filter.color.includes(color))
-                    return check !== undefined
+                    const check =  filter.color.includes(e.color);
+                    return check;
                 })
             }
 
-            if (filter.size.length > 0) {
+            if (filter.capacity.length > 0) {
                 temp = temp.filter(e => {
-                    const check = e.size.find(size => filter.size.includes(size))
-                    return check !== undefined
+                    const check = filter.capacity.includes(e.capacity);
+                    return check;
                 })
             }
-
             setProducts(temp)
         },
         [filter, productList],
@@ -93,6 +121,12 @@ const Catalog = () => {
     const filterRef = useRef(null)
 
     const showHideFilter = () => filterRef.current.classList.toggle('active')
+
+    
+
+    if (productQuery.isLoading) {
+        <ClipLoader color={'#427782'}/>
+    }
 
     return (
         <Helmet title="Sản phẩm">
@@ -141,16 +175,16 @@ const Catalog = () => {
 
                     <div className="catalog__filter__widget">
                         <div className="catalog__filter__widget__title">
-                            kích cỡ
+                            dung lượng 
                         </div>
                         <div className="catalog__filter__widget__content">
                             {
-                                size.map((item, index) => (
+                                capacity.map((item, index) => (
                                     <div key={index} className="catalog__filter__widget__content__item">
                                         <CheckBox
                                             label={item.display}
-                                            onChange={(input) => filterSelect("SIZE", input.checked, item)}
-                                            checked={filter.size.includes(item.size)}
+                                            onChange={(input) => filterSelect("CAPACITY", input.checked, item)}
+                                            checked={filter.capacity.includes(item.capacity)}
                                         />
                                     </div>
                                 ))

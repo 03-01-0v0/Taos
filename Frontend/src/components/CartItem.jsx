@@ -10,8 +10,25 @@ import { Link } from 'react-router-dom'
 const CartItem = props => {
 
     const dispatch = useDispatch()
-
+    if (props.item.product === undefined) {
+        props.item.product = {
+            id: '',
+            code: '',
+            capacity: '',
+            color: '',
+            description: '',
+            shortDescription: '',
+            img: ['1', '2'],
+            isShell: '',
+            name: '',
+            price: '',
+            purchasePrice: '',
+            quantity: '',
+            uniId: ''
+        }
+    }
     const itemRef = useRef(null)
+    console.log(props.item);
 
     const [item, setItem] = useState(props.item)
     const [quantity, setQuantity] = useState(props.item.quantity)
@@ -42,12 +59,12 @@ const CartItem = props => {
     return (
         <div className="cart__item" ref={itemRef}>
             <div className="cart__item__image">
-                <img src={item.product.image01} alt="" />
+                <img src={`http://localhost:3001/assets/${item.product.img[0]}.png`} alt="" />
             </div>
             <div className="cart__item__info">
                 <div className="cart__item__info__name">
                     <Link to={`/catalog/${item.slug}`}>
-                        {`${item.product.title} - ${item.color} - ${item.size}`}
+                        {`${item.product.name} - ${item.color} - ${item.capacity}`}
                     </Link>
                 </div>
                 <div className="cart__item__info__price">
