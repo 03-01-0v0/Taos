@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react';
 
-import Helmet from '../components/Helmet'
-import Section, {SectionBody, SectionTitle} from '../components/Section'
-import Grid from '../components/Grid'
-import ProductCard from '../components/ProductCard'
-import ProductView from '../components/ProductView'
+import Helmet from '../components/Helmet';
+import Section, {SectionBody, SectionTitle} from '../components/Section';
+import Grid from '../components/Grid';
+import ProductCard from '../components/ProductCard';
+import ProductView from '../components/ProductView';
 
-import productData from '../assets/fake-data/products'
-import { useQuery } from 'react-query'
-import productApi from '../api/productApi'
-import { useParams } from 'react-router-dom'
-import slugify from 'slugify'
-import ClipLoader from 'react-spinners/ClipLoader'
+import {useQuery} from 'react-query';
+import productApi from '../api/productApi';
+import {useParams} from 'react-router-dom';
+import slugify from 'slugify';
+import ClipLoader from 'react-spinners/ClipLoader';
 
-const Product = props => {
-    
+const Product = (props) => {
     const {id} = useParams();
     const fetchData = async () => {
         const res = await productApi.getProductById(id);
         return res.data;
-    }
+    };
 
     const fetchListData = async () => {
         const res = await productApi.getListProduct();
@@ -33,14 +31,14 @@ const Product = props => {
         color: '',
         description: '',
         shortDescription: '',
-        img: ['1', '2'],
+        img: ['iphone-13-blue1', 'iphone-13-blue2'],
         isShell: '',
         name: '',
         price: '',
         purchasePrice: '',
         quantity: '',
-        uniId: ''
-    }
+        uniId: '',
+    };
 
     const [product, setProduct] = useState(initProduct);
     const [relatedProducts, setRelatedProducts] = useState([]);
@@ -57,31 +55,23 @@ const Product = props => {
     }, [listProductQuery.data, productQuery.data]);
 
     React.useEffect(() => {
-        window.scrollTo(0,0)
-    }, [product])
+        window.scrollTo(0, 0);
+    }, [product]);
     if (productQuery.isLoading) {
-        return <ClipLoader color={'#427782'}/>
-    } else 
-    return (
-        <Helmet title={product.shortDescription}>
-            <Section>
-                <SectionBody>
-                    <ProductView product={product}/>
-                </SectionBody>
-            </Section>
-            <Section>
-                <SectionTitle>
-                    Khám phá thêm
-                </SectionTitle>
-                <SectionBody>
-                    <Grid
-                        col={4}
-                        mdCol={2}
-                        smCol={1}
-                        gap={20}
-                    >
-                        {
-                            relatedProducts.map((item, index) => (
+        return <ClipLoader color={'#427782'} />;
+    } else
+        return (
+            <Helmet title={product.shortDescription}>
+                <Section>
+                    <SectionBody>
+                        <ProductView product={product} />
+                    </SectionBody>
+                </Section>
+                <Section>
+                    <SectionTitle>Khám phá thêm</SectionTitle>
+                    <SectionBody>
+                        <Grid col={4} mdCol={2} smCol={1} gap={20}>
+                            {relatedProducts.map((item, index) => (
                                 <ProductCard
                                     key={index}
                                     img01={item.img[0]}
@@ -90,14 +80,13 @@ const Product = props => {
                                     price={Number(item.price)}
                                     slug={slugify(item.name.toLowerCase())}
                                     idx={item.id}
-                                />   
-                            ))
-                        }
-                    </Grid>
-                </SectionBody>
-            </Section>
-        </Helmet>
-    )
-}
+                                />
+                            ))}
+                        </Grid>
+                    </SectionBody>
+                </Section>
+            </Helmet>
+        );
+};
 
-export default Product
+export default Product;
