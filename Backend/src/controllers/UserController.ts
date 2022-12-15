@@ -1,8 +1,8 @@
-import {Response, Request, NextFunction} from 'express';
-import {accountRepositoryController} from '../databases/repository/AccountRepository';
-import {userRepositoryController} from '../databases/repository/UserRepository';
+import { Response, Request, NextFunction } from 'express';
+import { accountRepositoryController } from '../databases/repository/AccountRepository';
+import { userRepositoryController } from '../databases/repository/UserRepository';
 import * as bcrypt from 'bcrypt';
-import {createError} from '../utils/createError';
+import { createError } from '../utils/createError';
 
 const SALT = 10;
 class UserController {
@@ -25,14 +25,14 @@ class UserController {
     public async getMe(req: Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const {id} = body;
+            const { id } = body;
             const user = await userRepositoryController.getUserById(id);
             res.status(200).json({
                 success: true,
                 message: 'OK',
                 data: user,
             });
-        } catch(err) {
+        } catch (err) {
             next(err)
         }
     }
@@ -40,12 +40,10 @@ class UserController {
     public async createUser(req: Request, res: Response, next: NextFunction) {
         try {
             console.log('zoo');
-            
+
             const body = req.body;
-            const {name, password, email, address, phoneNumber} = body.params;
+            const { name, password, email, address, phoneNumber } = body.params;
             const user = await userRepositoryController.findUserByEmail(email);
-            console.log(user);
-            
             if (user) {
                 return next(createError(419, 'Email exits'));
             }
@@ -81,7 +79,7 @@ class UserController {
     public async updateUser(req, Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;
-            const {id, name, email, address, phoneNumber} = body;
+            const { id, name, email, address, phoneNumber } = body;
             const user = await userRepositoryController.updateUserById(
                 id,
                 name,
@@ -101,8 +99,8 @@ class UserController {
 
     public async deleteUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const query = req.query;            
-            const {id} = query;
+            const query = req.query;
+            const { id } = query;
             const user = await userRepositoryController.removeUser(Number(id));
             res.status(200).json({
                 success: true,

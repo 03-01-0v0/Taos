@@ -1,6 +1,6 @@
-import {Repository} from 'typeorm';
-import {User} from '../entity/User';
-import {appDataSource} from '../data-source';
+import { Repository } from 'typeorm';
+import { User } from '../entity/User';
+import { appDataSource } from '../data-source';
 
 class UserRepository {
     private _userRepository: Repository<User>;
@@ -14,7 +14,7 @@ class UserRepository {
     }
 
     public async getUserById(id: number): Promise<User> {
-        return this._userRepository.findOneBy({id});
+        return this._userRepository.findOneBy({ id });
     }
 
     public async addUser(
@@ -27,7 +27,7 @@ class UserRepository {
         user.name = name;
         user.email = email;
         user.address = address;
-        user.phoneNumber = phoneNumber;                
+        user.phoneNumber = phoneNumber;
         return this._userRepository.save(user);
     }
 
@@ -38,7 +38,7 @@ class UserRepository {
         address: string,
         phoneNumber: string
     ): Promise<User> {
-        const user = await this._userRepository.findOneBy({id});
+        const user = await this._userRepository.findOneBy({ id });
         if (!user) {
             throw new Error(`Cant find user by id: ${id}`);
         }
@@ -54,7 +54,7 @@ class UserRepository {
     }
 
     public async removeUser(id: number): Promise<User> {
-        const user = await this._userRepository.findOneBy({id});
+        const user = await this._userRepository.findOneBy({ id });
         if (!user) {
             throw new Error(`Cant find user by id: ${id}`);
         }
@@ -69,7 +69,18 @@ class UserRepository {
     }
 
     public async findUserByEmail(email: string): Promise<User> {
-        return this._userRepository.findOneBy({email});
+        return this._userRepository.findOneBy({ email });
+    }
+
+    public async findUserByEmailToCreate(name: string,
+        email: string,
+        address: string,
+        phoneNumber: string): Promise<User> {
+        const fUser = await this.findUserByEmail(email);
+        if (fUser) {
+            return this.updateUserById(fUser.id, name, email, address, phoneNumber);
+        } else
+            return this.addUser(name, email, address, phoneNumber);
     }
 }
 

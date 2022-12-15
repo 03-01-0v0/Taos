@@ -8,11 +8,13 @@ export class OrderBill {
     @Column()
     userId: number;
 
-    @Column()
+    @Column({
+        default: 1,
+    })
     paymentId: number;
 
     @Column({
-        default: 1
+        default: 1,
     })
     saleId: number;
 

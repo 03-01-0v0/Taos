@@ -1,8 +1,8 @@
-import {Repository} from 'typeorm';
-import {DetailOrderBill} from '../entity/DetailOrderBill';
-import {OrderBill} from '../entity/OrderBill';
-import {Product} from '../entity/Product';
-import {appDataSource} from '../data-source';
+import { Repository } from 'typeorm';
+import { DetailOrderBill } from '../entity/DetailOrderBill';
+import { OrderBill } from '../entity/OrderBill';
+import { Product } from '../entity/Product';
+import { appDataSource } from '../data-source';
 
 class DetailOrderBillRepo {
     private _detailOrderBillRepo: Repository<DetailOrderBill>;
@@ -32,7 +32,7 @@ class DetailOrderBillRepo {
     }
 
     public async getDetailOrderBillById(id: number): Promise<DetailOrderBill> {
-        return this._detailOrderBillRepo.findOneBy({id});
+        return this._detailOrderBillRepo.findOneBy({ id });
     }
 
     public setDetailOrderBill(
@@ -61,11 +61,11 @@ class DetailOrderBillRepo {
         color: string,
         capacity: string
     ): Promise<DetailOrderBill> {
-        const order = await this._orderBillRepo.findOneBy({id: orderId});
+        const order = await this._orderBillRepo.findOneBy({ id: orderId });
         if (!order) {
             throw new Error(`Cant find order with id: ${orderId}`);
         }
-        const product: Product = await this.productRepository.findOneBy({id: productId});
+        const product: Product = await this.productRepository.findOneBy({ id: productId });
         if (!product) {
             throw new Error(`Cant find product with id: ${productId}`);
         }
@@ -91,7 +91,7 @@ class DetailOrderBillRepo {
         color: string,
         capacity: string
     ) {
-        const detailOrderBill = await this._detailOrderBillRepo.findOneBy({id});
+        const detailOrderBill = await this._detailOrderBillRepo.findOneBy({ id });
         if (!detailOrderBill) {
             throw new Error(`Cant find detailOrderBill with id: ${id}`);
         }
@@ -108,7 +108,7 @@ class DetailOrderBillRepo {
     }
 
     public async removeDetailOrderBill(id: number): Promise<DetailOrderBill> {
-        const detailOrderBill = await this._detailOrderBillRepo.findOneBy({id});
+        const detailOrderBill = await this._detailOrderBillRepo.findOneBy({ id });
         if (!detailOrderBill) {
             throw new Error(`Cant find detailOrderBill with id: ${id}`);
         }
@@ -120,6 +120,20 @@ class DetailOrderBillRepo {
             return this._detailOrderBillRepo.save(detailOrderBill);
         }
         return null;
+    }
+
+    public async addListDetailOrderBill(orderId: number, products: Product[]) {
+        const lst = products.map(product => {
+            return {
+                orderId,
+                productId: product.id,
+                price: product.price,
+                quantity: product.quantity,
+                color: product.color,
+                capacity: product.capacity
+            };
+        })
+        return this._detailOrderBillRepo.insert(lst);
     }
 }
 

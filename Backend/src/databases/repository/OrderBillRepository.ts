@@ -1,9 +1,9 @@
-import {Repository} from 'typeorm';
-import {OrderBill} from '../entity/OrderBill';
-import {User} from '../entity/User';
-import {Payments} from '../entity/Payments';
-import {Sale} from '../entity/Sale';
-import {appDataSource} from '../data-source';
+import { Repository } from 'typeorm';
+import { OrderBill } from '../entity/OrderBill';
+import { User } from '../entity/User';
+import { Payments } from '../entity/Payments';
+import { Sale } from '../entity/Sale';
+import { appDataSource } from '../data-source';
 
 class OrderBillRepository {
     private _orderBillRepository: Repository<OrderBill>;
@@ -23,7 +23,7 @@ class OrderBillRepository {
     }
 
     public async getOrderBillById(id: number): Promise<OrderBill> {
-        return this._orderBillRepository.findOneBy({id});
+        return this._orderBillRepository.findOneBy({ id });
     }
 
     public setOrderBill(
@@ -43,18 +43,18 @@ class OrderBillRepository {
     public async addOrderBill(
         userId: number,
         paymentId: number,
-        saleId: number = 1,
+        saleId: number,
         note: string
     ): Promise<OrderBill> {
-        const user: User = await this._userRepository.findOneBy({id: userId});
+        const user: User = await this._userRepository.findOneBy({ id: userId });
         if (!user) {
             throw new Error(`Cant find user with id: ${userId}`);
         }
-        const payment: Payments = await this._paymentRepository.findOneBy({id: paymentId});
+        const payment: Payments = await this._paymentRepository.findOneBy({ id: paymentId });
         if (!payment) {
             throw new Error(`Cant find payment with id: ${paymentId}`);
         }
-        const sale: Sale = await this._saleRepository.findOneBy({id: saleId});
+        const sale: Sale = await this._saleRepository.findOneBy({ id: saleId });
         if (!sale) {
             throw new Error(`Cant find sale with id: ${saleId}`);
         }
@@ -70,19 +70,19 @@ class OrderBillRepository {
         saleId: number,
         note: string
     ): Promise<OrderBill> {
-        const user: User = await this._userRepository.findOneBy({id: userId});
+        const user: User = await this._userRepository.findOneBy({ id: userId });
         if (!user) {
             throw new Error(`Cant find user with id: ${userId}`);
         }
-        const payment: Payments = await this._paymentRepository.findOneBy({id: paymentId});
+        const payment: Payments = await this._paymentRepository.findOneBy({ id: paymentId });
         if (!payment) {
             throw new Error(`Cant find payment with id: ${paymentId}`);
         }
-        const sale: Sale = await this._saleRepository.findOneBy({id: saleId});
+        const sale: Sale = await this._saleRepository.findOneBy({ id: saleId });
         if (!sale) {
             throw new Error(`Cant find sale with id: ${saleId}`);
         }
-        const orderBill = await this._orderBillRepository.findOneBy({id});
+        const orderBill = await this._orderBillRepository.findOneBy({ id });
         if (!orderBill) {
             throw new Error(`Cant find orderBill with id: ${id}`);
         }
@@ -91,7 +91,7 @@ class OrderBillRepository {
     }
 
     public async removeOrderBill(id: number): Promise<OrderBill> {
-        const orderBill = await this._orderBillRepository.findOneBy({id});
+        const orderBill = await this._orderBillRepository.findOneBy({ id });
         if (!orderBill) {
             throw new Error(`Cant find orderBill with id: ${id}`);
         }
