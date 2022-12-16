@@ -196,39 +196,49 @@ export const orderBillColumns = [
     {field: 'id', headerName: 'ID', width: 70},
     {
         field: 'name',
-        headerName: 'Product',
+        headerName: 'User Name',
         width: 330,
     },
     {
-        field: 'orderId',
-        headerName: 'Order ID',
+        field: 'email',
+        headerName: 'Email',
+        width: 300,
+    },
+    {
+        field: 'address',
+        headerName: 'Address',
+        width: 300,
+    },
+    {
+        field: 'phoneNumber',
+        headerName: 'phoneNumber',
         width: 200,
     },
     {
-        field: 'price',
-        headerName: 'Price',
+        field: 'paymentId',
+        headerName: 'Hình thức thanh toán',
         width: 200,
-    },
-    {
-        field: 'quantity',
-        headerName: 'Quantity',
-        width: 100,
-    },
-    {
-        field: 'color',
-        headerName: 'Color',
-        width: 100,
         renderCell: (params) => {
             return (
-                <div style={{backgroundColor:params.row.color, color: params.row.color}} className='cellWithColor'>
+                <div className='cellWithStatus'>
+                    <div>{params.row.paymentId === 1 ? 'Thanh toán khi nhận hàng' : 'VN PAY'}</div>
                 </div>
             );
         },
     },
     {
-        field: 'capacity',
-        headerName: 'Capacity',
-        width: 150,
+        field: 'products',
+        headerName: 'Products',
+        width: 400,
+        renderCell: (params) => {
+            return (
+                <div>
+                    {params.row.products.map((e) => {
+                        return `x${e.quantity} ${e.name.toLowerCase()} ${e.color} ${e.capacity}, `;
+                    })}
+                </div>
+            );
+        },
     },
     {
         field: 'statusId',
@@ -237,8 +247,12 @@ export const orderBillColumns = [
         renderCell: (params) => {
             return (
                 <div className='cellWithStatus'>
-                    <div className={`cellWithStatus ${params.row.statusId === 1 ? 'active' : 'pending'}`}>
-                        {params.row.statusId ? 'Đã xác nhận' : 'Chưa xác nhận'}
+                    <div
+                        className={`cellWithStatus ${
+                            params.row.statusId === 1 ? 'active' : 'pending'
+                        }`}
+                    >
+                        {params.row.statusId === 1 ? 'Đã xác nhận' : 'Chưa xác nhận'}
                     </div>
                 </div>
             );
@@ -274,8 +288,10 @@ export const warehouseReceiptColumns = [
         width: 100,
         renderCell: (params) => {
             return (
-                <div style={{backgroundColor:params.row.color, color: params.row.color}} className='cellWithColor'>
-                </div>
+                <div
+                    style={{backgroundColor: params.row.color, color: params.row.color}}
+                    className='cellWithColor'
+                ></div>
             );
         },
     },
@@ -291,7 +307,11 @@ export const warehouseReceiptColumns = [
         renderCell: (params) => {
             return (
                 <div className='cellWithStatus'>
-                    <div className={`cellWithStatus ${params.row.statusId === 1 ? 'active' : 'pending'}`}>
+                    <div
+                        className={`cellWithStatus ${
+                            params.row.statusId === 1 ? 'active' : 'pending'
+                        }`}
+                    >
                         {params.row.statusId ? 'Đã xác nhận' : 'Chưa xác nhận'}
                     </div>
                 </div>
@@ -333,8 +353,10 @@ export const warehouseExportColumns = [
         width: 100,
         renderCell: (params) => {
             return (
-                <div style={{backgroundColor:params.row.color, color: params.row.color}} className='cellWithColor'>
-                </div>
+                <div
+                    style={{backgroundColor: params.row.color, color: params.row.color}}
+                    className='cellWithColor'
+                ></div>
             );
         },
     },

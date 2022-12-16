@@ -4,6 +4,7 @@ import { detailOrderBillController } from '../databases/repository/DetailOrderBi
 import { orderBillRepositoryController } from '../databases/repository/OrderBillRepository';
 import { userRepositoryController } from '../databases/repository/UserRepository';
 import { productRepositoryController } from '../databases/repository/ProductRepository';
+import { orderStatusRepoController } from '../databases/repository/OrderStatusRepository';
 interface dataStatistic {
     name: string;
     sum: number;
@@ -12,7 +13,7 @@ interface dataStatistic {
 class DetailOrderBillController {
     public async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const lstOrderBill = await detailOrderBillController.getAllDetailOrderBill();
+            const lstOrderBill = await orderBillRepositoryController.getInfoOrderToClient();
             if (!lstOrderBill) {
                 return next(createError(500, 'Internal Server Error'));
             }
@@ -87,7 +88,7 @@ class DetailOrderBillController {
         try {
             const body = req.body;
             const { name, email, phoneNumber, address, note, products } = body.params;
-            const user = await userRepositoryController.findUserByEmailToCreate(name, email, phoneNumber, address);
+            const user = await userRepositoryController.findUserByEmailToCreate(name, email, address, phoneNumber);
             if (!user) {
                 return next(createError(500, 'Internal Server Error'));
             }
@@ -95,6 +96,7 @@ class DetailOrderBillController {
             if (!orderBill) {
                 return next(createError(500, 'Internal Server Error'));
             }
+            const orderStatus = await orderStatusRepoController.addOrderStatus(orderBill.id);
             const lstProduct = await detailOrderBillController.addListDetailOrderBill(orderBill.id, products);
             if (!lstProduct) {
                 return next(createError(500, 'Internal Server Error'));
@@ -106,6 +108,62 @@ class DetailOrderBillController {
             })
         } catch (err) {
             next(err);
+        }
+    }
+
+    public async updateOrderBill(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body = req.body;
+            const { id, statusId } = body.params;
+            console.log(id, statusId);
+
+            const upd = await orderStatusRepoController.updateOrderStatus(Number(id), Number(statusId));
+            if (!upd) {
+                return next(createError(500, 'Internal Server Error'));
+            }
+            res.status(200).json({
+                success: true,
+                message: 'UPDATED',
+                data: upd
+            })
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    public async deleteOrderBill(req: Request, res: Response, next: NextFunction) {
+        try {
+            const query = req.query;
+            const { id } = query;
+            const order = await orderBillRepositoryController.removeOrderBill(Number(id));
+            if (!order) {
+                return next(createError(500, 'Internal Server Error'));
+            }
+            res.status(200).json({
+                success: true,
+                message: 'DELETED',
+                data: order
+            })
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    public async OrderBillByClientWithId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const query = req.query;
+            const { id } = query;
+            const orderBill = await orderBillRepositoryController.getInfoOrderToClientById(Number(id));
+            if (!orderBill) {
+                return next(createError(500, 'Internal Server Error'));
+            }
+            res.status(200).json({
+                success: true,
+                message: 'OK',
+                data: orderBill
+            })
+        } catch (err) {
+
         }
     }
 }

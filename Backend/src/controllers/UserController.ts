@@ -76,6 +76,33 @@ class UserController {
         }
     }
 
+    public async createUserByAdmin(req: Request, res: Response, next: NextFunction) {
+        try {
+            const body = req.body;
+            const { name, email, address, phoneNumber } = body.params;
+            const user = await userRepositoryController.findUserByEmail(email);
+            if (user) {
+                return next(createError(419, 'Email exits'));
+            }
+            const newUser = await userRepositoryController.addUser(
+                name,
+                email,
+                address,
+                phoneNumber
+            );
+            if (!newUser) {
+                return next(createError(500, 'Cant create user'));
+            }
+            res.status(201).json({
+                success: true,
+                message: 'CREATED',
+                data: newUser,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     public async updateUser(req, Request, res: Response, next: NextFunction) {
         try {
             const body = req.body;

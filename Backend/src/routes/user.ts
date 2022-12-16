@@ -10,6 +10,7 @@ router.get('/', UserController.getAll);
 router.post('/', verifyAdmin, UserController.createUser);
 router.put('/', verifyAdmin, UserController.updateUser);
 router.delete('/', verifyAdmin, UserController.deleteUser);
+router.post('/admin', verifyAdmin, UserController.createUserByAdmin)
 
 /* me */
 router.get('/me', [verifyToken, verifyPersonalUser], UserController.getAll);

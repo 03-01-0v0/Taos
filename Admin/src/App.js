@@ -9,7 +9,14 @@ import './style/dark.scss';
 import {useContext} from 'react';
 import {DarkModeContext} from './context/darkModeContext';
 import {AuthContext} from './context/AuthContext';
-import {productColumns, orderBillColumns, warehouseReceiptColumns, warehouseExportColumns, userColumns, accountColumns} from './datatablesource';
+import {
+    productColumns,
+    orderBillColumns,
+    warehouseReceiptColumns,
+    warehouseExportColumns,
+    userColumns,
+    accountColumns,
+} from './datatablesource';
 import NewRoom from './pages/newRoom/NewRoom';
 import Statistic from './pages/statistics/Statistics';
 import NewUser from './pages/newUser/NewUser';
@@ -18,6 +25,7 @@ import NewProduct from './pages/newProduct/NewProduct';
 import NewWarehouseExport from './pages/newWarehouseExport/NewWarehouseExport';
 import NewWarehouseReceipt from './pages/newWarehouseReceipt/NewWareHouseReceipt';
 import NewOrderBill from './pages/newOrderBill/NewOrderBill';
+import UpdateOrderBill from './pages/newOrderBill/UpdateOrderBill';
 
 function App() {
     const {darkMode} = useContext(DarkModeContext);
@@ -137,7 +145,7 @@ function App() {
                                 path=':orderBillId'
                                 element={
                                     <ProtectedRoute>
-                                        <Single />
+                                        <UpdateOrderBill />
                                     </ProtectedRoute>
                                 }
                             />

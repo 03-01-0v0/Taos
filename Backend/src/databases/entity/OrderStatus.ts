@@ -1,17 +1,21 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class OrderStatus {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        default: 13
+    })
     accountId: number;
 
     @Column()
     orderId: number;
 
-    @Column()
+    @Column({
+        default: 2
+    })
     statusId: number;
 
     @CreateDateColumn()

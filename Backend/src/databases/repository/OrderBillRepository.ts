@@ -3,6 +3,8 @@ import { OrderBill } from '../entity/OrderBill';
 import { User } from '../entity/User';
 import { Payments } from '../entity/Payments';
 import { Sale } from '../entity/Sale';
+import { DetailOrderBill } from '../entity/DetailOrderBill';
+import { Product } from '../entity/Product';
 import { appDataSource } from '../data-source';
 
 class OrderBillRepository {
@@ -10,12 +12,16 @@ class OrderBillRepository {
     private _userRepository: Repository<User>;
     private _paymentRepository: Repository<Payments>;
     private _saleRepository: Repository<Sale>;
+    private _detailOrderRepository: Repository<DetailOrderBill>;
+    private _productRepository: Repository<Product>;
 
     constructor() {
         this._orderBillRepository = appDataSource.getRepository(OrderBill);
         this._userRepository = appDataSource.getRepository(User);
         this._paymentRepository = appDataSource.getRepository(Payments);
         this._saleRepository = appDataSource.getRepository(Sale);
+        this._detailOrderRepository = appDataSource.getRepository(DetailOrderBill);
+        this._productRepository = appDataSource.getRepository(Product);
     }
 
     public async getAllOrderBill(): Promise<OrderBill[]> {
@@ -103,6 +109,72 @@ class OrderBillRepository {
             return this._orderBillRepository.save(orderBill);
         }
         return null;
+    }
+
+    public async getInfoOrderToClient() {
+        const orderUser = await this._orderBillRepository.query(`SELECT order_user.id,
+        "userId",
+        "paymentId",
+        "saleId",
+        note,
+        "name",
+        address,
+        email,
+        "phoneNumber",
+        order_user."createdDate",
+        order_user."updatedDate",
+        "statusId"
+        FROM public.order_user left join order_status on order_user."id" = order_status."orderId" order by  order_user."createdDate" DESC;`);
+        const detailOrder = await this._detailOrderRepository.find();
+        const products = await this._productRepository.find();
+        const res = orderUser.map(e => {
+            const fill = detailOrder.filter(detail => detail.orderId === e.id);
+            const fillPro = fill.map(e => {
+                const product = products.find(product => product.id = e.productId);
+                return {
+                    ...e,
+                    name: product.name
+                }
+            })
+            return {
+                ...e,
+                products: fillPro
+            }
+        })
+        return res;
+    }
+
+    public async getInfoOrderToClientById(id: number) {
+        const orderUser = await this._orderBillRepository.query(`SELECT order_user.id,
+        "userId",
+        "paymentId",
+        "saleId",
+        note,
+        "name",
+        address,
+        email,
+        "phoneNumber",
+        order_user."createdDate",
+        order_user."updatedDate",
+        order_status."statusId"
+        FROM public.order_user left join order_status on order_user."id" = order_status."orderId" where order_user."id"=${id} order by  order_user."createdDate" DESC;`);
+        const detailOrder = await this._detailOrderRepository.find();
+        const products = await this._productRepository.find();
+        const res = orderUser.map(e => {
+            const fill = detailOrder.filter(detail => detail.orderId === e.id);
+            const fillPro = fill.map(e => {
+                const product = products.find(product => product.id = e.productId);
+                return {
+                    ...e,
+                    name: product.name
+                }
+            })
+            return {
+                ...e,
+                products: fillPro
+            }
+        })
+        return res;
     }
 }
 
